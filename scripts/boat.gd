@@ -26,7 +26,7 @@ export var max_particles: int = 200
 var vel: Vector3
 var rad_vel: Vector3
 
-onready var particles: CPUParticles = get_node("particles")
+onready var particles: CPUParticles = get_node("../particles")
 # onready var part_offset: float = particles.transform.origin.z
 
 
@@ -37,8 +37,11 @@ var dash: bool = false
 
 var on_ramp: bool = false
 var in_water: bool = false
+var in_air: bool = false
 var water_timer: float = 0
 
+onready var cam: Camera = get_node("../Camera")
+onready var norm_cam_lerp = cam.follow_lerp
 
 
 # Called when the node enters the scene tree for the first time.
@@ -53,6 +56,14 @@ func _process(delta):
 	else:
 		gas = lerp(gas, 0, gas_lerp / 10)
 	
+
+
+	var p1 = transform.origin - transform.basis.z * 1.5
+	var p2 = p1 + transform.basis.x * .15
+	p1 -= transform.basis.x * .15
+	particles.emission_points = [p1, p2]
+	particles.emission_normals = [- transform.basis.z, - transform.basis.z]
+	particles.amount = lerp(min_particles, max_particles, gas)
 	# particles.transform.origin = transform.origin + transform.basis.z * part_offset
 	# particles.transform.basis = transform.basis
 
@@ -63,7 +74,7 @@ func _process(delta):
 	water_timer += delta
 
 func _physics_process(_delta):
-	particles.amount = int(lerp(min_particles, max_particles, gas))
+	# particles.amount = int(lerp(min_particles, max_particles, gas))
 	# determine if is in the water
 	if global_transform.origin.y < 0:
 		in_water = true
@@ -124,17 +135,27 @@ func _physics_process(_delta):
 		rad_vel.x -= gas_yaw * gas
 	if !in_water && !on_ramp:
 		rad_vel.x -= rotation_degrees.x * centre_force.y / 5
+
+	if in_air:
+		cam.follow_lerp = norm_cam_lerp / 4
+	else:
+		cam.follow_lerp = norm_cam_lerp
 	
 	# rotate and move
 	rotation_degrees += rad_vel
 	vel += Vector3.DOWN * gravity
 	vel = move_and_slide(vel)
 
+	var prev_ramp = on_ramp
 	on_ramp = false
 	for i in get_slide_count():
 		var col = get_slide_collision(i)
 		if col.collider.is_in_group("ramp"):
 			on_ramp = true
+	
+	if prev_ramp && ! on_ramp:
+		in_air = true
+	in_air = in_air && !in_water
 
 
 	# print("gas: %f, speed: %d" % [gas, vel.length()])
