@@ -1,8 +1,11 @@
 extends Control
 
+export var player_text: PackedScene
+
 onready var ip: SpinBox = get_node("Initial/IP/IP")
 onready var init_menu = get_node("Initial")
 onready var lobby_menu = get_node("Lobby Menu")
+onready var players = get_node("Lobby Menu/Players")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -51,7 +54,10 @@ func on_connected(id: int):
 	print("user connected!")
 	init_menu.visible = false;
 	lobby_menu.visible = true;
-	if get_tree().is_network_server():
-		get_node("Lobby Menu/Players/text").duplicate().text = id
-	else:
+
+	var p = player_text.instance()
+	players.add_child(p)
+	p.text = "Player %d" %[id]
+
+	if !get_tree().is_network_server():
 		get_node("Lobby Menu/Info/Play").disabled = true
