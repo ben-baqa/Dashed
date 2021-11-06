@@ -32,27 +32,37 @@ remotesync func play():
 	rpc("loadGame")
 
 remotesync func loadGame():
-	get_tree().change_scene("res://scenes/game.tscn")
+	remove_child(init_menu)
+	init_menu.queue_free()
+	remove_child(lobby_menu)
+	lobby_menu.queue_free()
 
-	var peer_id = get_tree().get_network_unique_id()
-	var my_player = player.instance()
-	my_player.name = (str(peer_id))
-	my_player.set_network_master(peer_id)
+	var game_scene = load("res://scenes/game.tscn").instance()
+	get_node("/root").add_child(game_scene)
+
+	# var peer_id = get_tree().get_network_unique_id()
+	# var my_player = player.instance()
+	# my_player.set_name(str(peer_id))
+	# my_player.set_network_master(peer_id)
+	# game_scene.add_child(my_player)
 	# get_node("/root/game").add_child(my_player)
 
 	for p in players:
 		var player_instance = player.instance()
 		player_instance.set_name(str(p))
 		player_instance.set_network_master(p)
+		game_scene.add_child(player_instance)
 
 func quit():
 	get_tree().quit()
 
 func join():
-	print("join ip " + "10.0.0.%d" % [ip.get_value()])
+	var join_ip = "10.0.0.%d" % [ip.get_value()]
+	print("joining ip " + join_ip)
+	get_node("Lobby Menu/Info/IP").text = join_ip
 
 	var peer = NetworkedMultiplayerENet.new()
-	print(peer.create_client("10.0.0.%d" % [ip.get_value()], 5500))
+	print(peer.create_client(join_ip, 5500))
 	get_tree().network_peer = peer
 
 func host():
@@ -98,3 +108,4 @@ remotesync func update_players(player_info):
 		player_list.add_child(inst)
 		inst.text = "Player %d:  " %[p] + player_info[p]
 	print("updating list of players!")
+	print(players)
