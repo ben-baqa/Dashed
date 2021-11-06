@@ -19,14 +19,13 @@ export var gas_yaw: float = 1
 export var centre_force: Vector2 = Vector2(.2, 2)
 export var level_speed: float = 30
 
-export var min_particles: int = 50
-export var max_particles: int = 200
-
 
 var vel: Vector3
 var rad_vel: Vector3
 
 onready var particles: CPUParticles = get_node("../particles")
+var prev_emission_point: Vector3
+var prev_emission_norm: Vector3
 # onready var part_offset: float = particles.transform.origin.z
 
 
@@ -57,14 +56,37 @@ func _process(delta):
 		gas = lerp(gas, 0, gas_lerp / 10)
 	
 
+	var new_point = transform.origin - transform.basis.z * 1.4
+	var e_norm = transform.basis.y * gas - transform.basis.z * (gas + 1)
+	var offset = transform.basis.x * .15 
+	var norm_offset = Vector3.RIGHT * .25
+	var p = []
+	var n = []
+	var i = 0.0
+	var speed_ratio = vel.x * vel.x + vel.z * vel.z / 1500
+	speed_ratio += gas / 2
+	while i <= 1:
+		var point = lerp(prev_emission_point, new_point, i)
+		if rand_range(0, 1) > speed_ratio:
+			point += Vector3.DOWN * 1000
+		p.append(point - offset)
+		p.append(point + offset)
+		n.append(lerp(prev_emission_norm, e_norm, i) - norm_offset)
+		n.append(lerp(prev_emission_norm, e_norm, i) + norm_offset)
 
-	var p1 = transform.origin - transform.basis.z * 1.5
-	var p2 = p1 + transform.basis.x * .15
-	p1 -= transform.basis.x * .15
-	particles.emission_points = [p1, p2]
-	particles.emission_normals = [- transform.basis.z, - transform.basis.z]
-	particles.amount = lerp(min_particles, max_particles, gas)
-	# particles.transform.origin = transform.origin + transform.basis.z * part_offset
+		i += 2.0 / 20
+	
+
+	# p[1] = p[0] + transform.basis.x * .15
+	# p[0] -= transform.basis.x * .15
+	particles.emission_points = p
+	particles.emission_normals = n
+	prev_emission_point = transform.origin - transform.basis.z * 1.4
+	prev_emission_norm = transform.basis.y * gas - transform.basis.z * (gas + 1)
+
+	# particles.direction = transform.basis.y * gas - transform.basis.z * (gas + 1)
+	# particles.emission_normals = [- transform.basis.z, - transform.basis.z]
+	# particles.transform.origin = transform.origin - transform.basis.z * 1.5
 	# particles.transform.basis = transform.basis
 
 	left = Input.is_action_pressed("left")
