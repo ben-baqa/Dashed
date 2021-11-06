@@ -25,6 +25,9 @@ func _process(delta):
 			join()
 
 remotesync func play():
+	rpc(loadGame())
+
+remotesync func loadGame():
 	get_tree().change_scene("res://scenes/game.tscn")
 
 func quit():
