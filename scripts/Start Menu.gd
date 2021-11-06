@@ -1,11 +1,15 @@
 extends Control
 
 export var player_text: PackedScene
+export var player: PackedScene
 
 onready var ip: SpinBox = get_node("Initial/IP/IP")
+onready var username: LineEdit = get_node("Initial/Name/Name")
 onready var init_menu = get_node("Initial")
 onready var lobby_menu = get_node("Lobby Menu")
-onready var players = get_node("Lobby Menu/Players")
+onready var player_list = get_node("Lobby Menu/Players")
+
+var players = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -25,10 +29,21 @@ func _process(delta):
 			join()
 
 remotesync func play():
-	rpc(loadGame())
+	rpc("loadGame")
 
 remotesync func loadGame():
 	get_tree().change_scene("res://scenes/game.tscn")
+
+	var peer_id = get_tree().get_network_unique_id()
+	var my_player = player.instance()
+	my_player.name = (str(peer_id))
+	my_player.set_network_master(peer_id)
+	# get_node("/root/game").add_child(my_player)
+
+	for p in players:
+		var player_instance = player.instance()
+		player_instance.set_name(str(p))
+		player_instance.set_network_master(p)
 
 func quit():
 	get_tree().quit()
@@ -52,15 +67,33 @@ func host():
 		if x.begins_with("10."):
 			ip_string += x.right(7) + "\n"
 	get_node("Lobby Menu/Info/IP").text = ip_string
+	players[get_tree().get_network_unique_id()] = username.text
+	update_players(players)
 
 func on_connected(id: int):
 	print("user connected!")
 	init_menu.visible = false;
 	lobby_menu.visible = true;
 
-	var p = player_text.instance()
-	players.add_child(p)
-	p.text = "Player %d" %[id]
+	# var p = player_text.instance()
+	# player_list.add_child(p)
+	# p.text = "Player %d" %[id]
 
 	if !get_tree().is_network_server():
 		get_node("Lobby Menu/Info/Play").disabled = true
+	
+	rpc_id(id, "register_player", username.text)
+
+func register_player(username: String):
+	var id = get_tree().get_rpc_sender_id()
+	players[id] = username
+	rpc("update_players", players)
+
+remotesync func update_players(player_info):
+	for c in player_list.get_children():
+		player_list.remove_child(c)
+		c.queue_free()
+	for p in player_info:
+		var inst = player_text.instance()
+		player_list.add_child(inst)
+		inst.text = "Player %d:  " %[p] + player_info[p]
