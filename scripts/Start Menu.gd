@@ -1,6 +1,6 @@
 extends Control
 
-onready var ip: LineEdit = get_node("Initial/IP/IP")
+onready var ip: SpinBox = get_node("Initial/IP/IP")
 onready var init_menu = get_node("Initial")
 onready var lobby_menu = get_node("Lobby Menu")
 
@@ -11,41 +11,47 @@ func _ready():
 	get_node("Initial/Quit").connect("button_down", self, "quit")
 	get_node("Lobby Menu/Info/Play").connect("button_down", self, "play")
 
-	get_tree().connect("network_peer_connected", self, "on_connected")
+	print(get_tree().connect("network_peer_connected", self, "on_connected"))
 	init_menu.visible = true;
 	lobby_menu.visible = false;
 
+func _process(delta):
+	if Input.is_action_just_pressed("ui_accept"):
+		print("enter pressed")
+		if get_focus_owner() && get_focus_owner().name == "@@5":
+			join()
 
 func play():
-	print("play pressed")
 	get_tree().change_scene("res://scenes/game.tscn")
 
 func quit():
-	print("Quit")
 	get_tree().quit()
 
 func join():
-	print("join ip " + ip.text)
-	init_menu.visible = false;
-	lobby_menu.visible = true;
+	print("join ip " + "10.0.0.%d" % [ip.get_value()])
 
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client(ip.text, 5500)
+	print(peer.create_client("10.0.0.%d" % [ip.get_value()], 5500))
 	get_tree().network_peer = peer
 
 func host():
-	print("host")
 	init_menu.visible = false;
 	lobby_menu.visible = true;
-
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(5500, 4)
 	get_tree().network_peer = peer
 
-	var ip_string = "IP: "
+	var ip_string = "Lobby ID: "
 	for x in IP.get_local_addresses():
-		ip_string += x + "\n"
+		if x.begins_with("10."):
+			ip_string += x.right(7) + "\n"
 	get_node("Lobby Menu/Info/IP").text = ip_string
 
 func on_connected(id: int):
 	print("user connected!")
+	init_menu.visible = false;
+	lobby_menu.visible = true;
+	if get_tree().is_network_server():
+		get_node("Lobby Menu/Players/text").duplicate().text = id
+	else:
+		get_node("Lobby Menu/Info/Play").disabled = true

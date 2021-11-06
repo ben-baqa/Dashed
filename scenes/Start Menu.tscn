@@ -43,13 +43,15 @@ text = "Lobby ID"
 align = 1
 valign = 1
 
-[node name="IP" type="LineEdit" parent="Initial/IP"]
+[node name="IP" type="SpinBox" parent="Initial/IP"]
 margin_left = 411.0
 margin_right = 819.0
 margin_bottom = 117.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "1236.3165.56641"
+max_value = 256.0
+value = 105.0
+rounded = true
 align = 1
 
 [node name="Join" type="Button" parent="Initial"]
@@ -69,7 +71,6 @@ size_flags_vertical = 3
 text = "Quit"
 
 [node name="Lobby Menu" type="HBoxContainer" parent="."]
-visible = false
 anchor_left = 0.1
 anchor_top = 0.1
 anchor_right = 0.9
@@ -90,7 +91,7 @@ margin_right = 407.0
 margin_bottom = 126.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
-text = "IP: 43215656165"
+text = "Lobby ID: 105"
 
 [node name="Play" type="Button" parent="Lobby Menu/Info"]
 margin_top = 242.0
