@@ -46,10 +46,12 @@ remotesync func loadGame():
 	# my_player.set_network_master(peer_id)
 	# game_scene.add_child(my_player)
 	# get_node("/root/game").add_child(my_player)
-
+	var offset = 0
 	for p in players:
 		var player_instance = player.instance()
 		player_instance.set_name(str(p))
+		player_instance.transform.origin = Vector3.RIGHT * offset
+		offset += 1
 		player_instance.set_network_master(p)
 		game_scene.add_child(player_instance)
 
@@ -59,7 +61,7 @@ func quit():
 func join():
 	var join_ip = "10.0.0.%d" % [ip.get_value()]
 	print("joining ip " + join_ip)
-	get_node("Lobby Menu/Info/IP").text = "Lobby ID: %d" % [ip.get_value]
+	get_node("Lobby Menu/Info/IP").text = "Lobby ID: %d" % [ip.get_value()]
 
 	var peer = NetworkedMultiplayerENet.new()
 	print(peer.create_client(join_ip, 5500))
