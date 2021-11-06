@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Dashed"
-run/main_scene="res://scenes/game.tscn"
+run/main_scene="res://scenes/Start Menu.tscn"
 config/icon="res://icon.png"
 
 [input]
