@@ -82,11 +82,11 @@ func on_connected(id: int):
 	if !get_tree().is_network_server():
 		get_node("Lobby Menu/Info/Play").disabled = true
 	
-	rpc_id(id, "register_player", username.text)
+	rpc("register_player", username.text)
 
-func register_player(username: String):
+remote func register_player(player_name: String):
 	var id = get_tree().get_rpc_sender_id()
-	players[id] = username
+	players[id] = player_name
 	rpc("update_players", players)
 
 remotesync func update_players(player_info):
@@ -97,3 +97,4 @@ remotesync func update_players(player_info):
 		var inst = player_text.instance()
 		player_list.add_child(inst)
 		inst.text = "Player %d:  " %[p] + player_info[p]
+	print("updating list of players!")
