@@ -96,7 +96,7 @@ func on_connected(id: int):
 	if !get_tree().is_network_server():
 		get_node("Lobby Menu/Info/Play").disabled = true
 	
-	rpc("register_player", username.text)
+	rpc_id(1, "register_player", username.text)
 
 remotesync func register_player(player_name: String):
 	var id = get_tree().get_rpc_sender_id()
