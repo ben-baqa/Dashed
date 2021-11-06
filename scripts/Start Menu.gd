@@ -84,7 +84,7 @@ func on_connected(id: int):
 	
 	rpc("register_player", username.text)
 
-remote func register_player(player_name: String):
+remotesync func register_player(player_name: String):
 	var id = get_tree().get_rpc_sender_id()
 	players[id] = player_name
 	rpc("update_players", players)
