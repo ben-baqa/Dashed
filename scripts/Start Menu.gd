@@ -59,7 +59,7 @@ func quit():
 func join():
 	var join_ip = "10.0.0.%d" % [ip.get_value()]
 	print("joining ip " + join_ip)
-	get_node("Lobby Menu/Info/IP").text = join_ip
+	get_node("Lobby Menu/Info/IP").text = "Lobby ID: %d" % [ip.get_value]
 
 	var peer = NetworkedMultiplayerENet.new()
 	print(peer.create_client(join_ip, 5500))
