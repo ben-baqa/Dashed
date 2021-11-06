@@ -24,7 +24,7 @@ func _process(delta):
 		if get_focus_owner() && get_focus_owner().name == "@@5":
 			join()
 
-func play():
+remotesync func play():
 	get_tree().change_scene("res://scenes/game.tscn")
 
 func quit():
