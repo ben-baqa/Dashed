@@ -1,6 +1,6 @@
 extends Control
 
-onready var ip: SpinBox = get_node("Initial/IP/IP")
+onready var ip: LineEdit = get_node("Initial/IP/IP")
 onready var init_menu = get_node("Initial")
 onready var lobby_menu = get_node("Lobby Menu")
 
@@ -25,12 +25,12 @@ func quit():
 	get_tree().quit()
 
 func join():
-	print("join ip %d" % [ip.get_value()])
+	print("join ip " + ip.text)
 	init_menu.visible = false;
 	lobby_menu.visible = true;
 
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_client(ip.get_value, 5500)
+	peer.create_client(ip.text, 5500)
 	get_tree().network_peer = peer
 
 func host():

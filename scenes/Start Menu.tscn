@@ -43,15 +43,13 @@ text = "Lobby ID"
 align = 1
 valign = 1
 
-[node name="IP" type="SpinBox" parent="Initial/IP"]
+[node name="IP" type="LineEdit" parent="Initial/IP"]
 margin_left = 411.0
 margin_right = 819.0
 margin_bottom = 117.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-max_value = 1e+10
-rounded = true
-allow_greater = true
+text = "1236.3165.56641"
 align = 1
 
 [node name="Join" type="Button" parent="Initial"]
@@ -115,3 +113,5 @@ margin_bottom = 480.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 text = "Player 1"
+align = 1
+valign = 1
