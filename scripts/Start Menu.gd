@@ -104,6 +104,7 @@ remotesync func register_player(player_name: String):
 	rpc("update_players", players)
 
 remotesync func update_players(player_info):
+	players = player_info
 	for c in player_list.get_children():
 		player_list.remove_child(c)
 		c.queue_free()
