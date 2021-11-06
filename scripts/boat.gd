@@ -43,13 +43,8 @@ onready var cam: Camera = get_node("../Camera")
 onready var norm_cam_lerp = cam.follow_lerp
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+master func _process(delta):
 	if Input.is_action_pressed("gas"):
 		gas = lerp(gas, 1, gas_lerp * delta)
 	else:
@@ -95,7 +90,7 @@ func _process(delta):
 
 	water_timer += delta
 
-func _physics_process(_delta):
+master func _physics_process(_delta):
 	# particles.amount = int(lerp(min_particles, max_particles, gas))
 	# determine if is in the water
 	if global_transform.origin.y < 0:
