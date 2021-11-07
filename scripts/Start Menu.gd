@@ -37,14 +37,6 @@ func _process(delta):
 		if ip.has_focus():
 			join()
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-	# if boat_spin && boat_spin.value != boat:
-	# 	boat_spin.apply()
-	# 	boat = boat_spin.value
-	# 	var id = get_tree().get_network_unique_id()
-	# 	players[id]["boat"] = boat
-	# 	boat_spin.release_focus()
-	# 	rpc_id(1, "update_boat", id, players[id])
-	# 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 # called by UI button
 func play():
@@ -166,8 +158,6 @@ remotesync func update_players(player_info):
 		var mat2 = high_mat.duplicate()
 		mat2.albedo_color = player_info[p]["c2"]
 		mesh.set_surface_material(1, mat2)
-		# mesh.transform.origin.x += p
-		# inst.get_node("VCon/View/Camera").transform.origin.x += p
 
 		# connect lobby colour pickers to update functions
 		if p == get_tree().get_network_unique_id():
@@ -183,8 +173,6 @@ remotesync func update_players(player_info):
 			c1.disabled = true
 			c2.disabled = true
 			b_val.editable = false
-
-
 	# print("updating list of players!")
 	# print(players)
 
