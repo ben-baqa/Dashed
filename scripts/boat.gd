@@ -240,7 +240,7 @@ remotesync func explode():
 	var inst = explosion.instance()
 	inst.global_transform.origin = global_transform.origin
 	get_node("../..").add_child(inst)
-	global_transform.origin = spawn
+	global_transform.origin = spawn + randf() * Vector3.RIGHT
 	rotation_degrees = spawn_rot
 	vel = Vector3.ZERO
 	rad_vel = Vector3.ZERO

@@ -1,0 +1,41 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://UI_Theme.tres" type="Theme" id=1]
+
+[node name="Entry" type="HBoxContainer"]
+margin_right = 1010.0
+margin_bottom = 586.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Place" type="Label" parent="."]
+margin_right = 334.0
+margin_bottom = 586.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+text = "1"
+align = 1
+valign = 1
+
+[node name="Name" type="Label" parent="."]
+margin_left = 338.0
+margin_right = 672.0
+margin_bottom = 586.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+text = "Bimgus"
+align = 1
+valign = 1
+
+[node name="Time" type="Label" parent="."]
+margin_left = 676.0
+margin_right = 1010.0
+margin_bottom = 586.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 1 )
+text = "3:00:00"
+align = 1
+valign = 1
