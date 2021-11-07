@@ -63,6 +63,7 @@ master func _process(delta):
 
 	update_particles(gas)
 	water_timer += delta
+	rpc("network_update", transform, gas)
 
 master func _physics_process(_delta):
 	if !is_network_master():
@@ -150,8 +151,6 @@ master func _physics_process(_delta):
 		in_air = true
 	in_air = in_air && !in_water
 	# print("gas: %f, speed: %d" % [gas, vel.length()])
-	rpc("network_update", [transform, gas])
-	
 
 func update_particles(gas: float):
 	var new_point = transform.origin - transform.basis.z * 1.4
