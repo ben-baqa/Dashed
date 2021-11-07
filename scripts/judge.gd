@@ -73,7 +73,8 @@ func find_place():
 		var f = get_furthest(p)
 		p.erase(f)
 		ar.append(f)
-		place.text = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"][i]
+		if f.is_network_master():
+			place.text = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"][i]
 	print(ar)
 
 func get_furthest(p):
