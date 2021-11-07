@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://scripts/boat.gd" type="Script" id=1]
 [ext_resource path="res://scripts/flag.gd" type="Script" id=2]
@@ -20,6 +20,11 @@ albedo_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="PrismMesh" id=4]
 size = Vector3( 0.03, 0.35, 0.2 )
+
+[sub_resource type="SphereMesh" id=8]
+material = ExtResource( 3 )
+radius = 10.0
+height = 20.0
 
 [sub_resource type="SpatialMaterial" id=5]
 albedo_color = Color( 0.3, 0.836667, 1, 1 )
@@ -89,6 +94,12 @@ material/0 = ExtResource( 4 )
 [node name="base" type="Spatial" parent="boat/flag/base/flag"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.1 )
 
+[node name="Orb" type="MeshInstance" parent="boat"]
+layers = 2
+cast_shadow = 0
+mesh = SubResource( 8 )
+material/0 = null
+
 [node name="particles" type="CPUParticles" parent="."]
 amount = 1200
 lifetime = 2.0
@@ -118,8 +129,32 @@ scale_amount_curve = SubResource( 7 )
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( -1, 1.10787e-07, -3.06429e-07, 0, 0.940425, 0.340002, 3.25841e-07, 0.340002, -0.940425, 0.00203037, 4.99817, -5.0013 )
+cull_mask = 1048573
 far = 1000.0
 script = ExtResource( 6 )
 follow_lerp = 0.15
 look_lerp = 0.4
 offset = Vector3( 0, 1, -2.5 )
+
+[node name="VCon" type="ViewportContainer" parent="."]
+anchor_left = 0.6
+anchor_top = 0.6
+anchor_right = 1.0
+anchor_bottom = 0.95
+size_flags_horizontal = 15
+size_flags_vertical = 15
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="View" type="Viewport" parent="VCon"]
+size = Vector2( 409, 210 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+gui_disable_input = true
+
+[node name="Camera" type="Camera" parent="VCon/View"]
+transform = Transform( -1.62921e-07, -1, -1.62921e-07, 0, -1.62921e-07, 1, -1, 1.62921e-07, 2.65431e-14, 0, 100, 0 )
+far = 10000.0

@@ -78,6 +78,13 @@ remotesync func loadGame():
 		mesh.set_surface_material(1, mat2)
 		player_instance.get_node("boat/flag/base/flag").set_surface_material(0, mat2)
 
+		player_instance.get_node("boat/Orb").set_surface_material(0, mat1)
+		if id == get_tree().get_network_unique_id():
+			player_instance.get_node("VCon/View/Camera").global_transform.origin = Vector3.UP * 250
+		else:
+			player_instance.get_node("VCon/View/Camera").queue_free()
+
+
 # called by UI button
 func quit():
 	get_tree().quit()
