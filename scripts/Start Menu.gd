@@ -17,6 +17,7 @@ onready var player_list = get_node("Lobby Menu/Players")
 
 var boat_spin: SpinBox
 var boat: int = 0
+var boat_rots = [0]
 
 var players = {}
 
@@ -128,10 +129,14 @@ remotesync func register_player(player_name: String, c1: Color, c2: Color):
 # push host player list to all instances
 remotesync func update_players(player_info):
 	players = player_info
+	var i = 0
 	for c in player_list.get_children():
+		boat_rots[i] = c.get_node("VCon/View/Boat").rotation_degrees.y
+		i+= 1
 		player_list.remove_child(c)
 		c.queue_free()
 
+	i = 0
 	for p in player_info:
 		var inst = player_text.instance()
 		player_list.add_child(inst)
@@ -149,6 +154,10 @@ remotesync func update_players(player_info):
 
 		var mesh: MeshInstance = inst.get_node("VCon/View/Boat")
 		mesh.mesh = boats[player_info[p]["boat"]]
+		if i < boat_rots.size():
+			mesh.rotation_degrees.y = boat_rots[i]
+		else:
+			boat_rots.append(0)
 
 		# colour boat properly
 		var mat1 = base_mat.duplicate()
@@ -166,13 +175,16 @@ remotesync func update_players(player_info):
 			c1.connect("popup_closed", self, "on_colour_picker_close")
 			c2.connect("popup_closed", self, "on_colour_picker_close")
 			b_val.connect("value_changed", self, "boat_change")
+			inst.get_node("HBox/name").text += " (You)"
 			boat_spin = b_val
-
-			
 		else:
-			c1.disabled = true
-			c2.disabled = true
-			b_val.editable = false
+			# c1.disabled = true
+			# c2.disabled = true
+			# b_val.editable = false
+			c1.queue_free()
+			c2.queue_free()
+			b_val.queue_free()
+
 	# print("updating list of players!")
 	# print(players)
 
