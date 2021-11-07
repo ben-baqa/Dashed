@@ -2,9 +2,12 @@ extends Control
 
 export var player_text: PackedScene
 export var player: PackedScene
+export var spawn_pos: Vector3
 
 onready var ip: SpinBox = get_node("Initial/IP/IP")
 onready var username: LineEdit = get_node("Initial/Name/Name")
+onready var color1: ColorPickerButton = get_node("Initial/Colour/main")
+onready var color2: ColorPickerButton = get_node("Initial/Colour/highlight")
 onready var init_menu = get_node("Initial")
 onready var lobby_menu = get_node("Lobby Menu")
 onready var player_list = get_node("Lobby Menu/Players")
@@ -40,22 +43,18 @@ remotesync func loadGame():
 	var game_scene = load("res://scenes/game.tscn").instance()
 	get_node("/root").add_child(game_scene)
 
-	# var peer_id = get_tree().get_network_unique_id()
-	# var my_player = player.instance()
-	# my_player.set_name(str(peer_id))
-	# my_player.set_network_master(peer_id)
-	# game_scene.add_child(my_player)
-	# get_node("/root/game").add_child(my_player)
 	var offset = 0
-	for p in players:
+	for id in players:
 		var player_instance = player.instance()
-		player_instance.set_name(str(p))
-		player_instance.transform.origin = Vector3.RIGHT * offset
-		offset += 1
-		player_instance.set_network_master(p)
-		# for c in player_instance.get_children():
-		# 	c.set_network_master(p)
+		player_instance.set_name(str(id))
+		player_instance.transform.origin = spawn_pos + Vector3.RIGHT * offset
+		offset += .5
+		player_instance.set_network_master(id)
 		game_scene.add_child(player_instance)
+
+		var mesh: MeshInstance = player_instance.get_node("boat/Mesh")
+		mesh.get_surface_material(0).albedo_color = players[id]["c1"]
+		mesh.get_surface_material(1).albedo_color = players[id]["c2"]
 
 func quit():
 	get_tree().quit()
@@ -81,7 +80,7 @@ func host():
 		if x.begins_with("10."):
 			ip_string += x.right(7) + "\n"
 	get_node("Lobby Menu/Info/IP").text = ip_string
-	players[get_tree().get_network_unique_id()] = username.text
+	players[get_tree().get_network_unique_id()] = {"name": username.text,"c1":color1.color, "c2": color2.color}
 	update_players(players)
 
 func on_connected(id: int):
@@ -96,11 +95,11 @@ func on_connected(id: int):
 	if !get_tree().is_network_server():
 		get_node("Lobby Menu/Info/Play").disabled = true
 	
-	rpc_id(1, "register_player", username.text)
+	rpc_id(1, "register_player", username.text, color1.color, color2.color)
 
-remotesync func register_player(player_name: String):
+remotesync func register_player(player_name: String, c1: Color, c2: Color):
 	var id = get_tree().get_rpc_sender_id()
-	players[id] = player_name
+	players[id] = {"name": player_name, "c1": c1, "c2": c2}
 	rpc("update_players", players)
 
 remotesync func update_players(player_info):
@@ -111,6 +110,6 @@ remotesync func update_players(player_info):
 	for p in player_info:
 		var inst = player_text.instance()
 		player_list.add_child(inst)
-		inst.text = "Player %d:  " %[p] + player_info[p]
-	# print("updating list of players!")
-	# print(players)
+		inst.text = "Player %d:  " %[p] + player_info[p]["name"]
+	print("updating list of players!")
+	print(players)

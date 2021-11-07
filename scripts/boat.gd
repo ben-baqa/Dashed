@@ -36,6 +36,7 @@ var dash: bool = false
 
 var on_ramp: bool = false
 var in_water: bool = false
+var exit_water: bool = false
 var in_air: bool = false
 var water_timer: float = 0
 
@@ -46,6 +47,9 @@ onready var norm_cam_lerp = cam.follow_lerp
 func _ready():
 	if is_network_master():
 		cam.current = true
+	var water = get_node("../../Track/Water")
+	water.connect("body_entered", self, "water_entered")
+	water.connect("body_exited", self, "water_exited")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 master func _process(delta):
@@ -68,12 +72,11 @@ master func _process(delta):
 master func _physics_process(_delta):
 	if !is_network_master():
 		return
-	# particles.amount = int(lerp(min_particles, max_particles, gas))
 	# determine if is in the water
-	if global_transform.origin.y < 0:
-		in_water = true
-		water_timer = 0
-	elif water_timer > out_of_water_threshold:
+	# if global_transform.origin.y < 0:
+	# 	in_water = true
+	# 	water_timer = 0
+	if exit_water && water_timer > out_of_water_threshold:
 		in_water = false
 
 	# determine clamped pitch of turn based on velocity
@@ -177,6 +180,22 @@ func update_particles(gas: float):
 	particles.emission_normals = n
 	prev_emission_point = transform.origin - transform.basis.z * 1.4
 	prev_emission_norm = transform.basis.y * gas - transform.basis.z * (gas + 1)
+
+func water_entered(body: Node):
+	if body != self:
+		return
+	in_water = true
+	exit_water = false
+	water_timer = 0
+	print("water collision")
+
+func water_exited(body: Node):
+	if body != self:
+		return
+	exit_water = true
+	water_timer = 0
+	print("water exit")
+
 
 
 remote func network_update(remote_transform, network_gas):

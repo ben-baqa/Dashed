@@ -13,6 +13,7 @@ __meta__ = {
 }
 player_text = ExtResource( 2 )
 player = ExtResource( 3 )
+spawn_pos = Vector3( -420, -70, -54 )
 
 [node name="Initial" type="VBoxContainer" parent="."]
 anchor_left = 0.1
@@ -25,14 +26,14 @@ __meta__ = {
 
 [node name="Name" type="HBoxContainer" parent="Initial"]
 margin_right = 819.0
-margin_bottom = 95.0
+margin_bottom = 76.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Label" type="Label" parent="Initial/Name"]
 margin_right = 407.0
-margin_bottom = 95.0
+margin_bottom = 76.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 text = "Name"
@@ -42,57 +43,66 @@ valign = 1
 [node name="Name" type="LineEdit" parent="Initial/Name"]
 margin_left = 411.0
 margin_right = 819.0
-margin_bottom = 95.0
+margin_bottom = 76.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Bimgus"
 align = 1
 
 [node name="Colour" type="HBoxContainer" parent="Initial"]
-margin_top = 99.0
+margin_top = 80.0
 margin_right = 819.0
-margin_bottom = 194.0
+margin_bottom = 157.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Label" type="Label" parent="Initial/Colour"]
-margin_right = 407.0
-margin_bottom = 95.0
+margin_right = 270.0
+margin_bottom = 77.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
-text = "Colour"
+text = "Colours"
 align = 1
 valign = 1
 
-[node name="Name" type="ColorPickerButton" parent="Initial/Colour"]
-margin_left = 411.0
+[node name="main" type="ColorPickerButton" parent="Initial/Colour"]
+margin_left = 274.0
+margin_right = 544.0
+margin_bottom = 77.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color( 1, 0.743333, 0.3, 1 )
+edit_alpha = false
+
+[node name="highlight" type="ColorPickerButton" parent="Initial/Colour"]
+margin_left = 548.0
 margin_right = 819.0
-margin_bottom = 95.0
+margin_bottom = 77.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color( 0.3, 0.556667, 1, 1 )
 edit_alpha = false
 
 [node name="Host" type="Button" parent="Initial"]
-margin_top = 198.0
+margin_top = 161.0
 margin_right = 819.0
-margin_bottom = 293.0
+margin_bottom = 237.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Host"
 
 [node name="IP" type="HBoxContainer" parent="Initial"]
-margin_top = 297.0
+margin_top = 241.0
 margin_right = 819.0
-margin_bottom = 392.0
+margin_bottom = 318.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Label" type="Label" parent="Initial/IP"]
 margin_right = 407.0
-margin_bottom = 95.0
+margin_bottom = 77.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 text = "Lobby ID"
@@ -102,7 +112,7 @@ valign = 1
 [node name="IP" type="SpinBox" parent="Initial/IP"]
 margin_left = 411.0
 margin_right = 819.0
-margin_bottom = 95.0
+margin_bottom = 77.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 max_value = 256.0
@@ -111,17 +121,17 @@ rounded = true
 align = 1
 
 [node name="Join" type="Button" parent="Initial"]
-margin_top = 396.0
+margin_top = 322.0
 margin_right = 819.0
-margin_bottom = 491.0
+margin_bottom = 399.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Join"
 
 [node name="Quit" type="Button" parent="Initial"]
-margin_top = 495.0
+margin_top = 403.0
 margin_right = 819.0
-margin_bottom = 590.0
+margin_bottom = 480.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Quit"

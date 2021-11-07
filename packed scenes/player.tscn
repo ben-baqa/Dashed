@@ -51,7 +51,7 @@ gas_yaw = 0.5
 centre_force = Vector2( 0.02, 0.02 )
 level_speed = 15.0
 
-[node name="rc boat" type="MeshInstance" parent="boat"]
+[node name="Mesh" type="MeshInstance" parent="boat"]
 mesh = ExtResource( 5 )
 material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
