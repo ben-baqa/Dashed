@@ -45,6 +45,8 @@ onready var norm_cam_lerp = cam.follow_lerp
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 master func _process(delta):
+	if !is_network_master():
+		return
 	if Input.is_action_pressed("gas"):
 		gas = lerp(gas, 1, gas_lerp * delta)
 	else:
@@ -91,6 +93,8 @@ master func _process(delta):
 	water_timer += delta
 
 master func _physics_process(_delta):
+	if !is_network_master():
+		return
 	# particles.amount = int(lerp(min_particles, max_particles, gas))
 	# determine if is in the water
 	if global_transform.origin.y < 0:
@@ -173,6 +177,11 @@ master func _physics_process(_delta):
 	if prev_ramp && ! on_ramp:
 		in_air = true
 	in_air = in_air && !in_water
-
-
 	# print("gas: %f, speed: %d" % [gas, vel.length()])
+	rpc("network_update", transform)
+
+remote func network_update(remote_transform):
+	if is_network_master():
+		print("whoopsie")
+		return
+	transform = remote_transform

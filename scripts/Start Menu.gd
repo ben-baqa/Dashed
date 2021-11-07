@@ -53,8 +53,8 @@ remotesync func loadGame():
 		player_instance.transform.origin = Vector3.RIGHT * offset
 		offset += 1
 		player_instance.set_network_master(p)
-		for c in player_instance.get_children():
-			c.set_network_master(p)
+		# for c in player_instance.get_children():
+		# 	c.set_network_master(p)
 		game_scene.add_child(player_instance)
 
 func quit():
@@ -112,5 +112,5 @@ remotesync func update_players(player_info):
 		var inst = player_text.instance()
 		player_list.add_child(inst)
 		inst.text = "Player %d:  " %[p] + player_info[p]
-	print("updating list of players!")
-	print(players)
+	# print("updating list of players!")
+	# print(players)
