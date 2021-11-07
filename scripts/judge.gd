@@ -88,8 +88,8 @@ func get_furthest(p):
 		elif d[1] == p[furthest][1] && d[0] > p[furthest][0]:
 			furthest = b
 		elif d[1] == p[furthest][1] && d[0] == p[furthest][0]:
-			var c = checkpoints[d[0]]
-			if b.distance_to(c) < furthest.distance_to(c):
+			var c = checkpoints[d[0]].global_transform.origin
+			if b.global_transform.origin.distance_to(c) < furthest.global_transform.origin.distance_to(c):
 				furthest = b
 	return furthest
 
