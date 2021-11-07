@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/boat_race_in_the_sky.ogg-2453aee445072678f3e55bb4b5f3b47e.oggstr"
+
+[deps]
+
+source_file="res://audio/boat_race_in_the_sky.ogg"
+dest_files=[ "res://.import/boat_race_in_the_sky.ogg-2453aee445072678f3e55bb4b5f3b47e.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -209,9 +209,6 @@ remotesync func update_players(player_info):
 			inst.get_node("HBox/name").text += "\n(You)"
 			boat_spin = b_val
 		else:
-			# c1.disabled = true
-			# c2.disabled = true
-			# b_val.editable = false
 			c1.queue_free()
 			c2.queue_free()
 			b_val.queue_free()
@@ -240,10 +237,9 @@ remotesync func update_colours(id, val):
 
 # manage editing boat in lobby
 func boat_change(val):
-	print(val)
+	# print(val)
 	var id = get_tree().get_network_unique_id()
 	players[id]["boat"] = val
-	# boat_spin.value = val
 	boat_spin.release_focus()
 	rpc_id(1, "update_boat", id, players[id])
 
