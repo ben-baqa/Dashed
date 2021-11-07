@@ -124,7 +124,7 @@ remotesync func update_players(player_info):
 	for p in player_info:
 		var inst = player_text.instance()
 		player_list.add_child(inst)
-		inst.get_node("name").text = "Player %d:  " %[p] + player_info[p]["name"]
+		inst.get_node("name").text = player_info[p]["name"]
 		# set up colour selection in lobby
 		var c1 = inst.get_node("main")
 		c1.color = player_info[p]["c1"]

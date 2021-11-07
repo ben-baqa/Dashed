@@ -23,7 +23,7 @@ var rot_v: Vector3
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	draw_line(Vector3.ZERO, flag.origin)
+	# draw_line(Vector3.ZERO, flag_base.global_transform.origin - global_transform.origin)
 	pass
 
 func _physics_process(_delta):

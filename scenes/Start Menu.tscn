@@ -13,7 +13,7 @@ __meta__ = {
 }
 player_text = ExtResource( 2 )
 player = ExtResource( 3 )
-spawn_pos = Vector3( -420, -70, -54 )
+spawn_pos = Vector3( -100, 16, 115 )
 
 [node name="Initial" type="VBoxContainer" parent="."]
 anchor_left = 0.1

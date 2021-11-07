@@ -44,14 +44,14 @@ var water_entry_point: float
 onready var cam: Camera = get_node("../Camera")
 onready var norm_cam_lerp = cam.follow_lerp
 
-# onready var shadow: KinematicBody = get_node("../shadow boat")
-onready var water = get_node("../../Track/Water")
 var normal: Vector3 = Vector3.UP
 
 func _ready():
 	if is_network_master():
 		cam.current = true
-	
+
+	var water = get_node("../../Track/Water")
+
 	water.connect("body_entered", self, "water_entered")
 	water.connect("body_exited", self, "water_exited")
 
@@ -194,12 +194,13 @@ func update_particles(gas: float):
 	prev_emission_point = transform.origin - transform.basis.z * 1.4
 	prev_emission_norm = transform.basis.y * gas - transform.basis.z * (gas + 1)
 
+# detect water
 func water_entered(body: Node):
 	print("water collision")
 	if body != self:
 		return
 	in_water_body = true
-	get_float_point()
+	# get_float_point()
 
 func water_exited(body: Node):
 	if(vel.y < 0):
@@ -212,18 +213,11 @@ func water_exited(body: Node):
 func get_float_point():
 	var space_state = get_world().direct_space_state
 	var res = space_state.intersect_ray(global_transform.origin + Vector3.UP * 10, global_transform.origin + Vector3.DOWN * 10, [self], 2147483647, false, true)
-	print(res)
+	
 	if !res.empty():
 		water_entry_point = res.position.y
+		normal = res.normal
 		return;
-
-	# for r in rays:
-	# 	if r.is_colliding() && r.get_collider().is_in_group("water"):
-	# 		normal = r.get_collision_normal()
-	# 		water_entry_point = r.get_collision_point().y
-	# 		return
-	print("no ray collission")
-	# water_entry_point = global_transform.origin.y + .2
 
 
 
