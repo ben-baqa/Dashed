@@ -84,6 +84,7 @@ master func _process(delta):
 
 master func _physics_process(_delta):
 	if !is_network_master():
+
 		return
 	# determine if is in the water
 
@@ -176,26 +177,11 @@ master func _physics_process(_delta):
 		in_air = true
 	in_air = in_air && !in_water
 	# print("gas: %f, speed: %d" % [gas, vel.length()])
-
+	
 	for i in get_slide_count():
 		var col: KinematicCollision = get_slide_collision(i)
 		if col.collider.is_in_group("land"):
-			var inst = explosion.instance()
-			inst.global_transform.origin = global_transform.origin
-			get_node("../..").add_child(inst)
-
-			print("oof")
-			global_transform.origin = spawn
-			rotation_degrees = spawn_rot
-			vel = Vector3.ZERO
-			rad_vel = Vector3.ZERO
-			gas = 0
-			left = false
-			right = false
-			dash = false
-			cam.follow_lerp = 0
-			cam.look_lerp = 0
-			dead_timer = 0
+			rpc("explode")
 	
 
 
@@ -249,6 +235,23 @@ func get_float_point():
 		water_entry_point = res.position.y + .2
 		normal = res.normal
 		return;
+
+remotesync func explode():
+	var inst = explosion.instance()
+	inst.global_transform.origin = global_transform.origin
+	get_node("../..").add_child(inst)
+	global_transform.origin = spawn
+	rotation_degrees = spawn_rot
+	vel = Vector3.ZERO
+	rad_vel = Vector3.ZERO
+	gas = 0
+	left = false
+	right = false
+	dash = false
+	cam.follow_lerp = 0
+	cam.look_lerp = 0
+	dead_timer = 0
+
 
 
 remote func network_update(remote_transform, network_gas):
