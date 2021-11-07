@@ -36,14 +36,17 @@ var dash: bool = false
 
 var on_ramp: bool = false
 var in_water: bool = false
-var exit_water: bool = false
+var in_water_body: bool = false
 var in_air: bool = false
 var water_timer: float = 0
+var water_entry_point: float
 
 onready var cam: Camera = get_node("../Camera")
 onready var norm_cam_lerp = cam.follow_lerp
 
+# onready var shadow: KinematicBody = get_node("../shadow boat")
 onready var water = get_node("../../Track/Water")
+var normal: Vector3 = Vector3.UP
 
 func _ready():
 	if is_network_master():
@@ -51,11 +54,6 @@ func _ready():
 	
 	water.connect("body_entered", self, "water_entered")
 	water.connect("body_exited", self, "water_exited")
-
-	water.connect("body_entered", self, "debug")
-
-func debug():
-	print("TEEY")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 master func _process(delta):
@@ -79,10 +77,18 @@ master func _physics_process(_delta):
 	if !is_network_master():
 		return
 	# determine if is in the water
+
 	# if global_transform.origin.y < 0:
 	# 	in_water = true
 	# 	water_timer = 0
-	if exit_water && water_timer > out_of_water_threshold:
+	# elif water_timer > out_of_water_threshold:
+	# 	in_water = false
+
+	if in_water_body:
+		in_water = true
+		water_timer = 0
+		get_float_point()
+	elif water_timer > out_of_water_threshold:
 		in_water = false
 
 	# determine clamped pitch of turn based on velocity
@@ -129,7 +135,7 @@ master func _physics_process(_delta):
 			rad_vel.x -= gas_yaw * gas
 	
 		# apply floating force
-		vel += -transform.origin.y * float_force * Vector3.UP
+		vel += (water_entry_point - global_transform.origin.y) * float_force * Vector3.UP
 
 		rad_vel.x -= rotation_degrees.x * centre_force.y
 		rad_vel.z -= rotation_degrees.z * centre_force.x
@@ -161,6 +167,7 @@ master func _physics_process(_delta):
 	in_air = in_air && !in_water
 	# print("gas: %f, speed: %d" % [gas, vel.length()])
 
+
 func update_particles(gas: float):
 	var new_point = transform.origin - transform.basis.z * 1.4
 	var e_norm = transform.basis.y * gas - transform.basis.z * (gas + 1)
@@ -191,16 +198,32 @@ func water_entered(body: Node):
 	print("water collision")
 	if body != self:
 		return
-	in_water = true
-	exit_water = false
-	water_timer = 0
+	in_water_body = true
+	get_float_point()
 
 func water_exited(body: Node):
+	if(vel.y < 0):
+		return
 	print("water exit")
 	if body != self:
 		return
-	exit_water = true
-	water_timer = 0
+	in_water_body = false
+
+func get_float_point():
+	var space_state = get_world().direct_space_state
+	var res = space_state.intersect_ray(global_transform.origin + Vector3.UP * 10, global_transform.origin + Vector3.DOWN * 10, [self], 2147483647, false, true)
+	print(res)
+	if !res.empty():
+		water_entry_point = res.position.y
+		return;
+
+	# for r in rays:
+	# 	if r.is_colliding() && r.get_collider().is_in_group("water"):
+	# 		normal = r.get_collision_normal()
+	# 		water_entry_point = r.get_collision_point().y
+	# 		return
+	print("no ray collission")
+	# water_entry_point = global_transform.origin.y + .2
 
 
 

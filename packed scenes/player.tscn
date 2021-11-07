@@ -35,6 +35,7 @@ _data = [ Vector2( 0, 0.245455 ), 0.0, 0.0, 0, 0, Vector2( 0.218391, 1 ), 0.0, 0
 
 [node name="boat" type="KinematicBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.004, 0, 0.001 )
+collision/safe_margin = 0.5
 script = ExtResource( 1 )
 move_force = 2.0
 turn_force = 1.75
@@ -56,7 +57,7 @@ mesh = ExtResource( 5 )
 material/0 = ExtResource( 3 )
 material/1 = ExtResource( 4 )
 
-[node name="CollisionShape2" type="CollisionShape" parent="boat"]
+[node name="CollisionShape" type="CollisionShape" parent="boat"]
 shape = SubResource( 1 )
 
 [node name="flag" type="ImmediateGeometry" parent="boat"]
