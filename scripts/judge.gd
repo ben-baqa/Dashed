@@ -8,11 +8,14 @@ var progress = {}
 
 onready var end_menu = get_child(0)
 
-var finish_count = 1
+var finish_count = 0
 var time = 0
 
 func _ready():
 	end_menu.visible = false
+	end_menu.get_node("VBox/Con").visible = false
+	end_menu.get_node("VBox/Con/Play").connect("button_down", get_node("../../Start Menu"), "reload")
+	end_menu.get_node("VBox/Con/Menu").connect("button_down", get_node("../../Start Menu"), "menu")
 func _process(delta):
 	time += delta
 
@@ -36,12 +39,15 @@ func pass_checkpoint(body, index):
 		progress[body][1] += 1
 	if progress[body][1] == laps:
 		print(progress[body][2] + " Finished")
+		finish_count += 1
 		var inst = menu_entry.instance()
 		inst.get_node("Place").text = "%d" %[finish_count]
-		finish_count += 1
 		inst.get_node("Name").text = progress[body][2]
 		inst.get_node("Time").text = format_time(time)
 		end_menu.get_child(0).add_child(inst)
+
+		if finish_count == progress.size() && get_tree().is_network_server():
+			end_menu.get_node("VBox/Con").visible = true
 
 		if body.is_network_master():
 			end_menu.visible = true

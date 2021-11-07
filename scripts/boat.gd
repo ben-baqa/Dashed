@@ -182,6 +182,7 @@ master func _physics_process(_delta):
 		var col: KinematicCollision = get_slide_collision(i)
 		if col.collider.is_in_group("land"):
 			rpc("explode")
+			break
 	
 
 

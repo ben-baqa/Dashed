@@ -44,12 +44,17 @@ func play():
 	rpc("loadGame")
 
 # called by play button of host
-remotesync func loadGame():
-	# destroy Lobby UI
-	remove_child(init_menu)
-	init_menu.queue_free()
-	remove_child(lobby_menu)
-	lobby_menu.queue_free()
+remotesync func loadGame(reload = false):
+	if reload:
+		var prev_game_scene = get_node("../game")
+		get_node("..").remove_child(prev_game_scene)
+		prev_game_scene.queue_free()
+	else:
+		# destroy Lobby UI
+		remove_child(init_menu)
+		init_menu.queue_free()
+		remove_child(lobby_menu)
+		lobby_menu.queue_free()
 
 	# load game scene
 	var game_scene = load("res://scenes/game.tscn").instance()
@@ -87,6 +92,19 @@ remotesync func loadGame():
 
 		judge.init(player_instance.get_node("boat"), players[id]["name"])
 
+func reload():
+	print("reloading...")
+	rpc("loadGame", true)
+
+func menu():
+	print("returning to menu")
+	rpc("return_to_menu")
+
+remotesync func return_to_menu():
+	get_node("../game").queue_free()
+	queue_free()
+	get_tree().change_scene("res://scenes/Start Menu.tscn")
+	get_tree().network_peer = null
 
 # called by UI button
 func quit():
