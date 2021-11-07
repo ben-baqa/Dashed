@@ -155,16 +155,6 @@ remotesync func update_players(player_info):
 		b_val.value = player_info[p]["boat"]
 
 		var mesh: MeshInstance = inst.get_node("VCon/View/Boat")
-		mesh.mesh = boats[player_info[p]["boat"]]
-
-		# colour boat properly
-		var mat1 = base_mat.duplicate()
-		mat1.albedo_color = player_info[p]["c1"]
-		mesh.set_surface_material(0, mat1)
-
-		var mat2 = high_mat.duplicate()
-		mat2.albedo_color = player_info[p]["c2"]
-		mesh.set_surface_material(1, mat2)
 
 		# connect lobby colour pickers to update functions
 		if p == get_tree().get_network_unique_id():
@@ -174,10 +164,22 @@ remotesync func update_players(player_info):
 			c2.connect("popup_closed", self, "on_colour_picker_close")
 			b_val.connect("value_changed", self, "boat_change")
 			boat_spin = b_val
+
+			mesh.mesh = boats[player_info[p]["boat"]]
+
+			# colour boat properly
+			var mat1 = base_mat.duplicate()
+			mat1.albedo_color = player_info[p]["c1"]
+			mesh.set_surface_material(0, mat1)
+
+			var mat2 = high_mat.duplicate()
+			mat2.albedo_color = player_info[p]["c2"]
+			mesh.set_surface_material(1, mat2)
 		else:
 			c1.disabled = true
 			c2.disabled = true
 			b_val.editable = false
+			mesh.queue_free()
 
 	# print("updating list of players!")
 	# print(players)
