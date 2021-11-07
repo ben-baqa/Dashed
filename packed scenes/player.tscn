@@ -34,7 +34,7 @@ _data = [ Vector2( 0, 0.245455 ), 0.0, 0.0, 0, 0, Vector2( 0.218391, 1 ), 0.0, 0
 [node name="player" type="Spatial"]
 
 [node name="boat" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00398564, 5.59972, 0.00125694 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.004, 0, 0.001 )
 script = ExtResource( 1 )
 move_force = 2.0
 turn_force = 1.75
@@ -59,16 +59,24 @@ material/1 = ExtResource( 4 )
 [node name="CollisionShape2" type="CollisionShape" parent="boat"]
 shape = SubResource( 1 )
 
-[node name="flag base" type="ImmediateGeometry" parent="boat"]
+[node name="flag" type="ImmediateGeometry" parent="boat"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.185, -1.4 )
 material_override = SubResource( 2 )
 script = ExtResource( 2 )
-flag_offset = Vector3( 0, -0.087, 0.1 )
+flag_offset = Vector3( 0, -0.15, -0.1 )
+lin_s = Vector3( 1, 1, 1 )
+rad_s = Vector3( 1, 1, 1 )
+damp = 0.98
 
-[node name="flag" type="MeshInstance" parent="boat/flag base"]
+[node name="base" type="Spatial" parent="boat/flag"]
+
+[node name="flag" type="MeshInstance" parent="boat/flag/base"]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0.75, -0.2 )
 mesh = SubResource( 3 )
 material/0 = ExtResource( 4 )
+
+[node name="base" type="Spatial" parent="boat/flag/base/flag"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, -0.1 )
 
 [node name="particles" type="CPUParticles" parent="."]
 amount = 1200

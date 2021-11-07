@@ -43,13 +43,19 @@ var water_timer: float = 0
 onready var cam: Camera = get_node("../Camera")
 onready var norm_cam_lerp = cam.follow_lerp
 
+onready var water = get_node("../../Track/Water")
 
 func _ready():
 	if is_network_master():
 		cam.current = true
-	var water = get_node("../../Track/Water")
+	
 	water.connect("body_entered", self, "water_entered")
 	water.connect("body_exited", self, "water_exited")
+
+	water.connect("body_entered", self, "debug")
+
+func debug():
+	print("TEEY")
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 master func _process(delta):
@@ -182,19 +188,19 @@ func update_particles(gas: float):
 	prev_emission_norm = transform.basis.y * gas - transform.basis.z * (gas + 1)
 
 func water_entered(body: Node):
+	print("water collision")
 	if body != self:
 		return
 	in_water = true
 	exit_water = false
 	water_timer = 0
-	print("water collision")
 
 func water_exited(body: Node):
+	print("water exit")
 	if body != self:
 		return
 	exit_water = true
 	water_timer = 0
-	print("water exit")
 
 
 

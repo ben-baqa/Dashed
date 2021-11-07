@@ -22,7 +22,7 @@ func _ready():
 	get_node("Initial/Quit").connect("button_down", self, "quit")
 	get_node("Lobby Menu/Info/Play").connect("button_down", self, "play")
 
-	print(get_tree().connect("network_peer_connected", self, "on_connected"))
+	get_tree().connect("network_peer_connected", self, "on_connected")
 	init_menu.visible = true;
 	lobby_menu.visible = false;
 
