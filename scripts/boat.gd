@@ -45,56 +45,25 @@ onready var norm_cam_lerp = cam.follow_lerp
 
 func _ready():
 	if is_network_master():
-		get_node("Camera").current = true
+		cam.current = true
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 master func _process(delta):
 	if !is_network_master():
 		return
+
 	if Input.is_action_pressed("gas"):
 		gas = lerp(gas, 1, gas_lerp * delta)
 	else:
 		gas = lerp(gas, 0, gas_lerp / 10)
-	
-
-	var new_point = transform.origin - transform.basis.z * 1.4
-	var e_norm = transform.basis.y * gas - transform.basis.z * (gas + 1)
-	var offset = transform.basis.x * .15 
-	var norm_offset = Vector3.RIGHT * .25
-	var p = []
-	var n = []
-	var i = 0.0
-	var speed_ratio = vel.x * vel.x + vel.z * vel.z / 1500
-	speed_ratio += gas / 2
-	while i <= 1:
-		var point = lerp(prev_emission_point, new_point, i)
-		if rand_range(0, 1) > speed_ratio:
-			point += Vector3.DOWN * 1000
-		p.append(point - offset)
-		p.append(point + offset)
-		n.append(lerp(prev_emission_norm, e_norm, i) - norm_offset)
-		n.append(lerp(prev_emission_norm, e_norm, i) + norm_offset)
-
-		i += 2.0 / 20
-	
-
-	# p[1] = p[0] + transform.basis.x * .15
-	# p[0] -= transform.basis.x * .15
-	particles.emission_points = p
-	particles.emission_normals = n
-	prev_emission_point = transform.origin - transform.basis.z * 1.4
-	prev_emission_norm = transform.basis.y * gas - transform.basis.z * (gas + 1)
-
-	# particles.direction = transform.basis.y * gas - transform.basis.z * (gas + 1)
-	# particles.emission_normals = [- transform.basis.z, - transform.basis.z]
-	# particles.transform.origin = transform.origin - transform.basis.z * 1.5
-	# particles.transform.basis = transform.basis
 
 	left = Input.is_action_pressed("left")
 	right = Input.is_action_pressed("right")
 	dash = dash || Input.is_action_just_pressed("dash")
 
+	update_particles(gas)
 	water_timer += delta
+	rpc("network_update", [transform, gas])
 
 master func _physics_process(_delta):
 	if !is_network_master():
@@ -182,10 +151,34 @@ master func _physics_process(_delta):
 		in_air = true
 	in_air = in_air && !in_water
 	# print("gas: %f, speed: %d" % [gas, vel.length()])
-	rpc("network_update", transform)
 
-remote func network_update(remote_transform):
-	if is_network_master():
-		print("whoopsie")
-		return
+func update_particles(gas: float):
+	var new_point = transform.origin - transform.basis.z * 1.4
+	var e_norm = transform.basis.y * gas - transform.basis.z * (gas + 1)
+	var offset = transform.basis.x * .15 
+	var norm_offset = Vector3.RIGHT * .25
+	var p = []
+	var n = []
+	var i = 0.0
+	var speed_ratio = vel.x * vel.x + vel.z * vel.z / 1500
+	speed_ratio += gas / 2
+	while i <= 1:
+		var point = lerp(prev_emission_point, new_point, i)
+		if rand_range(0, 1) > speed_ratio:
+			point += Vector3.DOWN * 1000
+		p.append(point - offset)
+		p.append(point + offset)
+		n.append(lerp(prev_emission_norm, e_norm, i) - norm_offset)
+		n.append(lerp(prev_emission_norm, e_norm, i) + norm_offset)
+
+		i += 2.0 / 20
+	
+	particles.emission_points = p
+	particles.emission_normals = n
+	prev_emission_point = transform.origin - transform.basis.z * 1.4
+	prev_emission_norm = transform.basis.y * gas - transform.basis.z * (gas + 1)
+
+
+remote func network_update(remote_transform, network_gas):
 	transform = remote_transform
+	update_particles(network_gas)
