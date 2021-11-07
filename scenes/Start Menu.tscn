@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/Start Menu.gd" type="Script" id=1]
 [ext_resource path="res://packed scenes/player text.tscn" type="PackedScene" id=2]
 [ext_resource path="res://packed scenes/player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://models/sailboat.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://models/rc boat.obj" type="ArrayMesh" id=5]
+[ext_resource path="res://resources/materials/boat main.tres" type="Material" id=6]
+[ext_resource path="res://resources/materials/boat highlights.tres" type="Material" id=7]
 
 [node name="Start Menu" type="Control"]
 anchor_right = 1.0
@@ -14,6 +18,9 @@ __meta__ = {
 player_text = ExtResource( 2 )
 player = ExtResource( 3 )
 spawn_pos = Vector3( -100, 16, 115 )
+boats = [ ExtResource( 5 ), ExtResource( 4 ) ]
+base_mat = ExtResource( 6 )
+high_mat = ExtResource( 7 )
 
 [node name="Initial" type="VBoxContainer" parent="."]
 visible = false

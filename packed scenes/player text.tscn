@@ -1,6 +1,11 @@
-[gd_scene format=2]
+[gd_scene load_steps=5 format=2]
 
-[node name="player text" type="HBoxContainer"]
+[ext_resource path="res://scripts/rotate.gd" type="Script" id=1]
+[ext_resource path="res://models/sailboat.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://resources/materials/boat main.tres" type="Material" id=3]
+[ext_resource path="res://resources/materials/boat highlights.tres" type="Material" id=4]
+
+[node name="player text" type="VBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -9,9 +14,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="name" type="Label" parent="."]
-margin_right = 338.0
-margin_bottom = 600.0
+[node name="HBox" type="HBoxContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 298.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="name" type="Label" parent="HBox"]
+margin_right = 253.0
+margin_bottom = 298.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Player 1"
@@ -21,22 +32,57 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="main" type="ColorPickerButton" parent="."]
-margin_left = 342.0
-margin_right = 681.0
-margin_bottom = 600.0
+[node name="main" type="ColorPickerButton" parent="HBox"]
+margin_left = 257.0
+margin_right = 510.0
+margin_bottom = 298.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="highlight" type="ColorPickerButton" parent="."]
-margin_left = 685.0
-margin_right = 1024.0
-margin_bottom = 600.0
+[node name="highlight" type="ColorPickerButton" parent="HBox"]
+margin_left = 514.0
+margin_right = 767.0
+margin_bottom = 298.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="boat" type="SpinBox" parent="HBox"]
+margin_left = 771.0
+margin_right = 1024.0
+margin_bottom = 298.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+max_value = 1.0
+step = 1.0
+rounded = true
+align = 1
+prefix = "Boat: "
+
+[node name="VCon" type="ViewportContainer" parent="."]
+margin_top = 302.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="View" type="Viewport" parent="VCon"]
+size = Vector2( 1024, 298 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="Boat" type="MeshInstance" parent="VCon/View"]
+mesh = ExtResource( 2 )
+material/0 = ExtResource( 3 )
+material/1 = ExtResource( 4 )
+script = ExtResource( 1 )
+turn_speed = 3.0
+
+[node name="Camera" type="Camera" parent="VCon/View"]
+transform = Transform( -1.62921e-07, -0.866025, 0.5, 0, 0.5, 0.866025, -1, 1.41093e-07, -8.14603e-08, 0.75, 1.5, 0 )

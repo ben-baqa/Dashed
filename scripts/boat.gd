@@ -215,10 +215,9 @@ func get_float_point():
 	var res = space_state.intersect_ray(global_transform.origin + Vector3.UP * 10, global_transform.origin + Vector3.DOWN * 10, [self], 2147483647, false, true)
 	
 	if !res.empty():
-		water_entry_point = res.position.y
+		water_entry_point = res.position.y + .2
 		normal = res.normal
 		return;
-
 
 
 remote func network_update(remote_transform, network_gas):
