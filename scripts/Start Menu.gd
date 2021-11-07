@@ -134,8 +134,8 @@ remotesync func update_players(player_info):
 			c1.connect("color_changed", self, "main_colour_change")
 			c2.connect("color_changed", self, "highlight_colour_change")
 		else:
-			c1.enabled = false
-			c2.enabled = false
+			c1.disabled = true
+			c2.disabled = true
 
 	# print("updating list of players!")
 	# print(players)
