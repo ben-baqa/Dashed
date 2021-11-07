@@ -43,6 +43,10 @@ onready var cam: Camera = get_node("../Camera")
 onready var norm_cam_lerp = cam.follow_lerp
 
 
+func _ready():
+	if is_network_master():
+		get_node("Camera").current = true
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 master func _process(delta):
 	if !is_network_master():
