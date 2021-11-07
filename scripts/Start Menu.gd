@@ -130,9 +130,12 @@ remotesync func update_players(player_info):
 		c1.color = player_info[p]["c1"]
 		var c2 = inst.get_node("highlight")
 		c2.color = player_info[p]["c2"]
+		# connect lobby colour pickers to update functions
 		if p == get_tree().get_network_unique_id():
 			c1.connect("color_changed", self, "main_colour_change")
 			c2.connect("color_changed", self, "highlight_colour_change")
+			c1.connect("popup_closed", self, "on_colour_picker_close")
+			c2.connect("popup_closed", self, "on_colour_picker_close")
 		else:
 			c1.disabled = true
 			c2.disabled = true
@@ -144,13 +147,17 @@ remotesync func update_players(player_info):
 # manage editing colours in lobby
 func main_colour_change(color):
 	var id = get_tree().get_network_unique_id()
-	rpc_id(1, "update_colours", id, color, color2.color)
+	players[id]["c1"] = color
 
 func highlight_colour_change(color):
 	var id = get_tree().get_network_unique_id()
-	rpc_id(1, "update_colours", id, color1.color, color)
+	players[id]["c2"] = color
 
-remotesync func update_colours(id, main: Color, high: Color):
-	players[id]["c1"] = main
-	players[id]["c2"] = high
+func on_colour_picker_close():
+	var id = get_tree().get_network_unique_id()
+	rpc_id(1, "update_colours", id, players[id])
+
+# update master colours when selected
+remotesync func update_colours(id, val):
+	players[id] = val
 	rpc("update_players", players)
