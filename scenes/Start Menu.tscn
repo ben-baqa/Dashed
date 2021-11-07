@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/Start Menu.gd" type="Script" id=1]
 [ext_resource path="res://packed scenes/player text.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://resources/materials/boat highlights.tres" type="Material" id=7]
 [ext_resource path="res://UI_Theme.tres" type="Theme" id=8]
 [ext_resource path="res://audio/boat_race_in_the_sky.ogg" type="AudioStream" id=9]
+[ext_resource path="res://models/bird_boats.obj" type="ArrayMesh" id=10]
 
 [node name="Start Menu" type="Control"]
 anchor_right = 1.0
@@ -20,7 +21,7 @@ __meta__ = {
 player_text = ExtResource( 2 )
 player = ExtResource( 3 )
 spawn_pos = Vector3( -100, 16, 80 )
-boats = [ ExtResource( 5 ), ExtResource( 4 ) ]
+boats = [ ExtResource( 5 ), ExtResource( 4 ), ExtResource( 10 ) ]
 base_mat = ExtResource( 6 )
 high_mat = ExtResource( 7 )
 

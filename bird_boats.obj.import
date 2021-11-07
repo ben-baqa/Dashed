@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/bird_boats.obj-51d00b8cb1bc12df315df85d69a91fe8.mesh"
+
+[deps]
+
+files=[ "res://.import/bird_boats.obj-51d00b8cb1bc12df315df85d69a91fe8.mesh" ]
+
+source_file="res://bird_boats.obj"
+dest_files=[ "res://.import/bird_boats.obj-51d00b8cb1bc12df315df85d69a91fe8.mesh", "res://.import/bird_boats.obj-51d00b8cb1bc12df315df85d69a91fe8.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
