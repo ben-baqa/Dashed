@@ -176,3 +176,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="player text" parent="Lobby Menu/Players" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 408.0
+margin_bottom = 480.0

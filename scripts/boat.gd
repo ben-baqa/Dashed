@@ -163,7 +163,7 @@ func update_particles(gas: float):
 	var p = []
 	var n = []
 	var i = 0.0
-	var speed_ratio = vel.x * vel.x + vel.z * vel.z / 1500
+	var speed_ratio = vel.x * vel.x + vel.z * vel.z / 10000
 	speed_ratio += gas / 2
 	while i <= 1:
 		var point = lerp(prev_emission_point, new_point, i)

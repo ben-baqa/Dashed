@@ -1,10 +1,42 @@
 [gd_scene format=2]
 
-[node name="player text" type="Label"]
-margin_right = 408.0
-margin_bottom = 480.0
+[node name="player text" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="name" type="Label" parent="."]
+margin_right = 338.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "Player 1"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="main" type="ColorPickerButton" parent="."]
+margin_left = 342.0
+margin_right = 681.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="highlight" type="ColorPickerButton" parent="."]
+margin_left = 685.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
