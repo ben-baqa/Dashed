@@ -53,8 +53,13 @@ remotesync func loadGame():
 		game_scene.add_child(player_instance)
 
 		var mesh: MeshInstance = player_instance.get_node("boat/Mesh")
-		mesh.get_surface_material(0).albedo_color = players[id]["c1"]
-		mesh.get_surface_material(1).albedo_color = players[id]["c2"]
+		var mat1 = mesh.get_surface_material(0).duplicate()
+		mat1.albedo_color = players[id]["c1"]
+		mesh.set_surface_material(0, mat1)
+
+		var mat2 = mesh.get_surface_material(1).duplicate()
+		mat2.albedo_color = players[id]["c2"]
+		mesh.set_surface_material(1, mat2)
 
 func quit():
 	get_tree().quit()
