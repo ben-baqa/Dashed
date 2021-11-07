@@ -131,7 +131,10 @@ remotesync func update_players(player_info):
 	players = player_info
 	var i = 0
 	for c in player_list.get_children():
-		boat_rots[i] = c.get_node("VCon/View/Boat").rotation_degrees.y
+		if i < boat_rots.size():
+			boat_rots[i] = c.get_node("VCon/View/Boat").rotation_degrees.y
+		else:
+			boat_rots.append(0)
 		i+= 1
 		player_list.remove_child(c)
 		c.queue_free()
