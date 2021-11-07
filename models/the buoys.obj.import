@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/the buoys.obj-ec67289df93419b32b25bd9a062874cb.mesh"
+
+[deps]
+
+files=[ "res://.import/the buoys.obj-ec67289df93419b32b25bd9a062874cb.mesh" ]
+
+source_file="res://models/the buoys.obj"
+dest_files=[ "res://.import/the buoys.obj-ec67289df93419b32b25bd9a062874cb.mesh", "res://.import/the buoys.obj-ec67289df93419b32b25bd9a062874cb.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
