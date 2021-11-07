@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scripts/rotate.gd" type="Script" id=1]
 [ext_resource path="res://models/sailboat.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://resources/materials/boat main.tres" type="Material" id=3]
 [ext_resource path="res://resources/materials/boat highlights.tres" type="Material" id=4]
 [ext_resource path="res://default_env.tres" type="Environment" id=5]
+[ext_resource path="res://UI_Theme.tres" type="Theme" id=6]
 
 [sub_resource type="World" id=1]
 environment = ExtResource( 5 )
@@ -29,6 +30,7 @@ margin_right = 253.0
 margin_bottom = 298.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource( 6 )
 text = "Player 1"
 align = 1
 valign = 1
@@ -42,6 +44,7 @@ margin_right = 510.0
 margin_bottom = 298.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -52,6 +55,7 @@ margin_right = 767.0
 margin_bottom = 298.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -62,11 +66,9 @@ margin_right = 1024.0
 margin_bottom = 298.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = ExtResource( 6 )
 max_value = 1.0
-step = 1.0
 rounded = true
-align = 1
-prefix = "Boat: "
 
 [node name="VCon" type="ViewportContainer" parent="."]
 margin_top = 302.0

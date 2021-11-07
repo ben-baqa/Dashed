@@ -57,6 +57,7 @@ remotesync func loadGame():
 
 	# instantiate
 	var offset = 0
+	var judge = game_scene.get_node("Judge")
 	for id in players:
 		var player_instance = player.instance()
 		player_instance.set_name(str(id))
@@ -83,6 +84,8 @@ remotesync func loadGame():
 			player_instance.get_node("VCon/View/Camera").global_transform.origin = Vector3.UP * 250
 		else:
 			player_instance.get_node("VCon/View/Camera").queue_free()
+
+		judge.init(player_instance.get_node("boat"), players[id]["name"])
 
 
 # called by UI button
@@ -185,7 +188,7 @@ remotesync func update_players(player_info):
 			c1.connect("popup_closed", self, "on_colour_picker_close")
 			c2.connect("popup_closed", self, "on_colour_picker_close")
 			b_val.connect("value_changed", self, "boat_change")
-			inst.get_node("HBox/name").text += " (You)"
+			inst.get_node("HBox/name").text += "\n(You)"
 			boat_spin = b_val
 		else:
 			# c1.disabled = true

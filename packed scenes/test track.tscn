@@ -24,7 +24,9 @@ material/0 = ExtResource( 2 )
 [node name="terrain" parent="." index="5"]
 material/0 = ExtResource( 1 )
 
-[node name="StaticBody" type="StaticBody" parent="terrain" index="0"]
+[node name="StaticBody" type="StaticBody" parent="terrain" index="0" groups=[
+"land",
+]]
 
 [node name="CollisionShape" type="CollisionShape" parent="terrain/StaticBody" index="0"]
 shape = SubResource( 2 )

@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://packed scenes/test track.tscn" type="PackedScene" id=1]
+[ext_resource path="res://packed scenes/Checkpoint.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/judge.gd" type="Script" id=3]
 
 [node name="game" type="Spatial"]
 
@@ -24,3 +26,14 @@ render_target_update_mode = 0
 
 [node name="Spatial" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -102.53, 16.1128, 114.291 )
+
+[node name="Checkpoint" parent="." instance=ExtResource( 2 )]
+
+[node name="Checkpoint2" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.0180983, 0, -0.999836, 0, 1, 0, 0.999836, 0, 0.0180983, 104.589, 14.2881, 82.991 )
+
+[node name="Checkpoint3" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.999781, 0, -0.0209247, 0, 1, 0, 0.0209247, 0, 0.999781, -9.97758, 14.2881, -185.333 )
+
+[node name="Judge" type="Spatial" parent="."]
+script = ExtResource( 3 )

@@ -5,76 +5,11 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.92.0 commit date:2021-02-24, commit time:16:25, hash:02948a2cab44</authoring_tool>
     </contributor>
-    <created>2021-11-07T11:18:18</created>
-    <modified>2021-11-07T11:18:18</modified>
+    <created>2021-11-07T14:15:55</created>
+    <modified>2021-11-07T14:15:55</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
-  <library_cameras>
-    <camera id="Camera-camera" name="Camera">
-      <optics>
-        <technique_common>
-          <perspective>
-            <xfov sid="xfov">39.59775</xfov>
-            <aspect_ratio>1.777778</aspect_ratio>
-            <znear sid="znear">0.1</znear>
-            <zfar sid="zfar">100</zfar>
-          </perspective>
-        </technique_common>
-      </optics>
-      <extra>
-        <technique profile="blender">
-          <shiftx sid="shiftx" type="float">0</shiftx>
-          <shifty sid="shifty" type="float">0</shifty>
-          <dof_distance sid="dof_distance" type="float">10</dof_distance>
-        </technique>
-      </extra>
-    </camera>
-  </library_cameras>
-  <library_lights>
-    <light id="Light-light" name="Light">
-      <technique_common>
-        <point>
-          <color sid="color">1000 1000 1000</color>
-          <constant_attenuation>1</constant_attenuation>
-          <linear_attenuation>0</linear_attenuation>
-          <quadratic_attenuation>0.00111109</quadratic_attenuation>
-        </point>
-      </technique_common>
-      <extra>
-        <technique profile="blender">
-          <type sid="type" type="int">0</type>
-          <flag sid="flag" type="int">0</flag>
-          <mode sid="mode" type="int">1</mode>
-          <gamma sid="blender_gamma" type="float">1</gamma>
-          <red sid="red" type="float">1</red>
-          <green sid="green" type="float">1</green>
-          <blue sid="blue" type="float">1</blue>
-          <shadow_r sid="blender_shadow_r" type="float">0</shadow_r>
-          <shadow_g sid="blender_shadow_g" type="float">0</shadow_g>
-          <shadow_b sid="blender_shadow_b" type="float">0</shadow_b>
-          <energy sid="blender_energy" type="float">1000</energy>
-          <dist sid="blender_dist" type="float">29.99998</dist>
-          <spotsize sid="spotsize" type="float">75</spotsize>
-          <spotblend sid="spotblend" type="float">0.15</spotblend>
-          <att1 sid="att1" type="float">0</att1>
-          <att2 sid="att2" type="float">1</att2>
-          <falloff_type sid="falloff_type" type="int">2</falloff_type>
-          <clipsta sid="clipsta" type="float">0.04999995</clipsta>
-          <clipend sid="clipend" type="float">30.002</clipend>
-          <bias sid="bias" type="float">1</bias>
-          <soft sid="soft" type="float">3</soft>
-          <bufsize sid="bufsize" type="int">2880</bufsize>
-          <samp sid="samp" type="int">3</samp>
-          <buffers sid="buffers" type="int">1</buffers>
-          <area_shape sid="area_shape" type="int">1</area_shape>
-          <area_size sid="area_size" type="float">0.1</area_size>
-          <area_sizey sid="area_sizey" type="float">0.1</area_sizey>
-          <area_sizez sid="area_sizez" type="float">1</area_sizez>
-        </technique>
-      </extra>
-    </light>
-  </library_lights>
   <library_effects>
     <effect id="Material-effect">
       <profile_COMMON>
@@ -143,46 +78,6 @@
         </triangles>
       </mesh>
     </geometry>
-    <geometry id="Plane-mesh" name="Plane">
-      <mesh>
-        <source id="Plane-mesh-positions">
-          <float_array id="Plane-mesh-positions-array" count="48">-109.0609 -142.6573 25 -122.5132 5.318364 25 -58.8885 -3.441292 25 -115.6306 -74.76992 25 -111.8765 112.6242 25 -59.94422 181.45 25 84.90295 184.5785 25 90.22131 62.56898 25 -3.632155 100.7361 25 -56.81578 62.56898 25 57.99828 -16.89362 25 111.4948 -4.066976 25 92.02728 -177.4105 26.79067 8.881647 -147.6628 25 -56.50293 -209.2932 25 -107.1838 -212.4217 25</float_array>
-          <technique_common>
-            <accessor source="#Plane-mesh-positions-array" count="16" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <source id="Plane-mesh-normals">
-          <float_array id="Plane-mesh-normals-array" count="0"/>
-          <technique_common>
-            <accessor source="#Plane-mesh-normals-array" count="0" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <source id="Plane-mesh-map-0">
-          <float_array id="Plane-mesh-map-0-array" count="0"/>
-          <technique_common>
-            <accessor source="#Plane-mesh-map-0-array" count="0" stride="2">
-              <param name="S" type="float"/>
-              <param name="T" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="Plane-mesh-vertices">
-          <input semantic="POSITION" source="#Plane-mesh-positions"/>
-        </vertices>
-        <lines count="16">
-          <input semantic="VERTEX" source="#Plane-mesh-vertices" offset="0"/>
-          <p>5 4 4 1 1 2 2 3 3 0 6 5 7 6 8 7 9 8 10 9 11 10 12 11 13 12 14 13 15 14 15 0</p>
-        </lines>
-      </mesh>
-    </geometry>
     <geometry id="Cube-mesh" name="Cube">
       <mesh>
         <source id="Cube-mesh-positions">
@@ -231,18 +126,6 @@
       <node id="water" name="water" type="NODE">
         <matrix sid="transform">150 0 0 0 0 250 0 0 0 0 1 25 0 0 0 1</matrix>
         <instance_geometry url="#Plane_003-mesh" name="water"/>
-      </node>
-      <node id="snake" name="snake" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
-        <instance_geometry url="#Plane-mesh" name="snake"/>
-      </node>
-      <node id="Camera" name="Camera" type="NODE">
-        <matrix sid="transform">0.6859207 -0.3240135 0.6515582 7.358891 0.7276763 0.3054208 -0.6141704 -6.925791 0 0.8953956 0.4452714 4.958309 0 0 0 1</matrix>
-        <instance_camera url="#Camera-camera"/>
-      </node>
-      <node id="Light" name="Light" type="NODE">
-        <matrix sid="transform">-0.2908646 -0.7711008 0.5663932 4.076245 0.9551712 -0.1998834 0.2183912 1.005454 -0.05518906 0.6045247 0.7946723 5.903862 0 0 0 1</matrix>
-        <instance_light url="#Light-light"/>
       </node>
       <node id="terrain" name="terrain" type="NODE">
         <matrix sid="transform">150 0 0 0 0 250 0 0 0 0 25 0 0 0 0 1</matrix>

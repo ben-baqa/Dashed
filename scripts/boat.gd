@@ -43,8 +43,15 @@ var water_entry_point: float
 
 onready var cam: Camera = get_node("../Camera")
 onready var norm_cam_lerp = cam.follow_lerp
+onready var norm_cam_look = cam.look_lerp
 
 var normal: Vector3 = Vector3.UP
+onready var spawn: Vector3 = global_transform.origin
+var spawn_rot: Vector3 = Vector3.ZERO
+
+var dead_time = 1
+var dead_timer = 10
+export var explosion: PackedScene
 
 func _ready():
 	if is_network_master():
@@ -60,17 +67,19 @@ master func _process(delta):
 	if !is_network_master():
 		return
 
-	if Input.is_action_pressed("gas"):
-		gas = lerp(gas, 1, gas_lerp * delta)
-	else:
-		gas = lerp(gas, 0, gas_lerp / 10)
+	if dead_timer > dead_time:
+		if Input.is_action_pressed("gas"):
+			gas = lerp(gas, 1, gas_lerp * delta)
+		else:
+			gas = lerp(gas, 0, gas_lerp / 10)
 
-	left = Input.is_action_pressed("left")
-	right = Input.is_action_pressed("right")
-	dash = dash || Input.is_action_just_pressed("dash")
+		left = Input.is_action_pressed("left")
+		right = Input.is_action_pressed("right")
+		dash = dash || Input.is_action_just_pressed("dash")
 
 	update_particles(gas)
 	water_timer += delta
+	dead_timer += delta
 	rpc("network_update", transform, gas)
 
 master func _physics_process(_delta):
@@ -147,8 +156,9 @@ master func _physics_process(_delta):
 
 	if in_air:
 		cam.follow_lerp = norm_cam_lerp / 4
-	else:
+	elif in_water && dead_timer > dead_time:
 		cam.follow_lerp = norm_cam_lerp
+		cam.look_lerp = norm_cam_look
 	
 	# rotate and move
 	rotation_degrees += rad_vel
@@ -166,6 +176,27 @@ master func _physics_process(_delta):
 		in_air = true
 	in_air = in_air && !in_water
 	# print("gas: %f, speed: %d" % [gas, vel.length()])
+
+	for i in get_slide_count():
+		var col: KinematicCollision = get_slide_collision(i)
+		if col.collider.is_in_group("land"):
+			var inst = explosion.instance()
+			inst.global_transform.origin = global_transform.origin
+			get_node("../..").add_child(inst)
+
+			print("oof")
+			global_transform.origin = spawn
+			rotation_degrees = spawn_rot
+			vel = Vector3.ZERO
+			rad_vel = Vector3.ZERO
+			gas = 0
+			left = false
+			right = false
+			dash = false
+			cam.follow_lerp = 0
+			cam.look_lerp = 0
+			dead_timer = 0
+	
 
 
 func update_particles(gas: float):
@@ -196,7 +227,7 @@ func update_particles(gas: float):
 
 # detect water
 func water_entered(body: Node):
-	print("water collision")
+	# print("water collision")
 	if body != self:
 		return
 	in_water_body = true
@@ -205,14 +236,14 @@ func water_entered(body: Node):
 func water_exited(body: Node):
 	if(vel.y < 0):
 		return
-	print("water exit")
+	# print("water exit")
 	if body != self:
 		return
 	in_water_body = false
 
 func get_float_point():
 	var space_state = get_world().direct_space_state
-	var res = space_state.intersect_ray(global_transform.origin + Vector3.UP * 10, global_transform.origin + Vector3.DOWN * 10, [self], 2147483647, false, true)
+	var res = space_state.intersect_ray(global_transform.origin + Vector3.UP * 10, global_transform.origin + Vector3.DOWN * 10, [self], 1, false, true)
 	
 	if !res.empty():
 		water_entry_point = res.position.y + .2
