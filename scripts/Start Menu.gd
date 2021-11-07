@@ -116,7 +116,7 @@ func on_connected(_id: int):
 	lobby_menu.visible = true;
 
 	if !get_tree().is_network_server():
-		get_node("Lobby Menu/Info/Play").disabled = true
+		get_node("Lobby Menu/Info/Play").queue_free()
 	# registers a new player with the host
 	rpc_id(1, "register_player", username.text, color1.color, color2.color)
 
