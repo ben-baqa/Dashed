@@ -66,6 +66,7 @@ remotesync func loadGame():
 		var mat2 = mesh.get_surface_material(1).duplicate()
 		mat2.albedo_color = players[id]["c2"]
 		mesh.set_surface_material(1, mat2)
+		player_instance.get_node("boat/flag/base/flag").set_surface_material(0, mat2)
 
 # called by UI button
 func quit():

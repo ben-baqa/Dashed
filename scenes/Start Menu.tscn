@@ -16,6 +16,7 @@ player = ExtResource( 3 )
 spawn_pos = Vector3( -100, 16, 115 )
 
 [node name="Initial" type="VBoxContainer" parent="."]
+visible = false
 anchor_left = 0.1
 anchor_top = 0.1
 anchor_right = 0.9
@@ -137,7 +138,6 @@ size_flags_vertical = 3
 text = "Quit"
 
 [node name="Lobby Menu" type="HBoxContainer" parent="."]
-visible = false
 anchor_left = 0.1
 anchor_top = 0.1
 anchor_right = 0.9
