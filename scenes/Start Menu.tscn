@@ -205,4 +205,5 @@ margin_bottom = 480.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
+volume_db = -6.0
 autoplay = true
