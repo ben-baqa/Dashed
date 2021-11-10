@@ -167,43 +167,41 @@ __meta__ = {
 }
 
 [node name="Info" type="VBoxContainer" parent="Lobby Menu"]
-margin_right = 407.0
-margin_bottom = 480.0
+margin_right = 766.0
+margin_bottom = 864.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="IP" type="Label" parent="Lobby Menu/Info"]
-margin_top = 107.0
-margin_right = 407.0
-margin_bottom = 130.0
+margin_top = 208.0
+margin_right = 766.0
+margin_bottom = 222.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
-theme = ExtResource( 8 )
 text = "Lobby ID: 105"
 
 [node name="Play" type="Button" parent="Lobby Menu/Info"]
-margin_top = 242.0
-margin_right = 407.0
-margin_bottom = 480.0
+margin_top = 434.0
+margin_right = 766.0
+margin_bottom = 864.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
 text = "play"
 
 [node name="Players" type="VBoxContainer" parent="Lobby Menu"]
-margin_left = 411.0
-margin_right = 819.0
-margin_bottom = 480.0
+margin_left = 770.0
+margin_right = 1536.0
+margin_bottom = 864.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="player text" parent="Lobby Menu/Players" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 408.0
-margin_bottom = 480.0
+margin_right = 766.0
+margin_bottom = 864.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
 volume_db = -6.0
-autoplay = true

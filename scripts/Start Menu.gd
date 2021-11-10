@@ -112,7 +112,8 @@ func quit():
 
 # called by UI button, initiated client conection
 func join():
-	var join_ip = "10.0.0.%d" % [ip.get_value()]
+	# var join_ip = "10.0.0.%d" % [ip.get_value()]
+	var join_ip = "%d" % [ip.get_value()]
 	print("joining ip " + join_ip)
 	get_node("Lobby Menu/Info/IP").text = "Lobby ID: %d" % [ip.get_value()]
 
@@ -131,8 +132,9 @@ func host():
 	# fill out ip_string
 	var ip_string = "Lobby ID: "
 	for x in IP.get_local_addresses():
-		if x.begins_with("10."):
-			ip_string += x.right(7) + "\n"
+		# if x.begins_with("10."):
+		# 	ip_string += x.right(7) + "\n"
+		ip_string += x + "\n"
 	get_node("Lobby Menu/Info/IP").text = ip_string
 	players[get_tree().get_network_unique_id()] = {"name": username.text,"c1":color1.color, "c2": color2.color, "boat": 0}
 	update_players(players)

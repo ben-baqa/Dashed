@@ -32,33 +32,47 @@ size_flags_vertical = 3
 
 [node name="Con" type="HBoxContainer" parent="Judge/End Menu/VBox"]
 margin_right = 1010.0
-margin_bottom = 192.0
+margin_bottom = 586.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Play" type="Button" parent="Judge/End Menu/VBox/Con"]
+self_modulate = Color( 1, 1, 1, 0.266667 )
 margin_right = 503.0
-margin_bottom = 192.0
+margin_bottom = 586.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 5 )
+
+[node name="Label" type="Label" parent="Judge/End Menu/VBox/Con/Play"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 text = "Play Again"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Menu" type="Button" parent="Judge/End Menu/VBox/Con"]
+self_modulate = Color( 1, 1, 1, 0.266667 )
 margin_left = 507.0
 margin_right = 1010.0
-margin_bottom = 192.0
+margin_bottom = 586.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 5 )
 text = "Menu"
 
-[node name="Entry" parent="Judge/End Menu/VBox" instance=ExtResource( 4 )]
-margin_top = 196.0
-margin_bottom = 389.0
-
-[node name="Entry2" parent="Judge/End Menu/VBox" instance=ExtResource( 4 )]
-margin_top = 393.0
+[node name="Label" type="Label" parent="Judge/End Menu/VBox/Con/Menu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Menu"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Place" type="Label" parent="Judge"]
 anchor_right = 1.0
