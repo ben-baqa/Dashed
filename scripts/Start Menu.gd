@@ -1,5 +1,9 @@
 extends Control
 
+enum IPFormat{ a_ten = 0, b_ten = 1, c_ten, d_192 = 2 }
+var ip_format: int = 0
+var ip_address: String = ""
+
 export var player_text: PackedScene
 export var player: PackedScene
 export var spawn_pos: Vector3
@@ -7,7 +11,7 @@ export (Array, Mesh) var boats
 export var base_mat: SpatialMaterial
 export var high_mat: SpatialMaterial
 
-onready var ip: SpinBox = get_node("Initial/IP/IP")
+onready var ip: LineEdit = get_node("Initial/IP/IP")
 onready var username: LineEdit = get_node("Initial/Name/Name")
 onready var color1: ColorPickerButton = get_node("Initial/Colour/main")
 onready var color2: ColorPickerButton = get_node("Initial/Colour/highlight")
@@ -30,8 +34,46 @@ func _ready():
 	get_node("Lobby Menu/Info/Play").connect("button_down", self, "play")
 
 	get_tree().connect("network_peer_connected", self, "on_connected")
-	init_menu.visible = true;
-	lobby_menu.visible = false;
+	init_menu.visible = true
+	lobby_menu.visible = false
+	fetch_ip_type()
+
+func fetch_ip_type():
+	var adds = IP.get_local_addresses()
+
+	for a in adds:
+		if a.begins_with("10.0.0"):
+			ip_format = 0
+			ip_address = a.right(7)
+			return
+		elif a.begins_with("10.0"):
+			ip_format = 1
+			ip_address = a.right(5)
+			return
+
+	for a in adds:
+		if a.begins_with("192.168"):
+			ip_format = 2
+			ip_address = a.right(8)
+			return
+
+	for a in adds:
+		if (a.split('.').size() == 4):
+			ip_address = a
+	ip_format = 3
+
+func ip_prefix():
+	match ip_format:
+		IPFormat.a_ten:
+			return "10.0.0."
+		IPFormat.b_ten:
+			return "10.0."
+		IPFormat.c_ten:
+			return "10."
+		IPFormat.d_192:
+			return "192.168."
+	return ""
+
 
 func _process(delta):
 	if Input.is_action_just_pressed("ui_accept"):
@@ -112,10 +154,9 @@ func quit():
 
 # called by UI button, initiated client conection
 func join():
-	# var join_ip = "10.0.0.%d" % [ip.get_value()]
-	var join_ip = "%d" % [ip.get_value()]
+	var join_ip = ip_prefix() + ip.text
 	print("joining ip " + join_ip)
-	get_node("Lobby Menu/Info/IP").text = "Lobby ID: %d" % [ip.get_value()]
+	get_node("Lobby Menu/Info/IP").text = "Lobby ID: " + ip.text
 
 	var peer = NetworkedMultiplayerENet.new()
 	print(peer.create_client(join_ip, 5500))
@@ -130,12 +171,7 @@ func host():
 	get_tree().network_peer = peer
 
 	# fill out ip_string
-	var ip_string = "Lobby ID: "
-	for x in IP.get_local_addresses():
-		# if x.begins_with("10."):
-		# 	ip_string += x.right(7) + "\n"
-		ip_string += x + "\n"
-	get_node("Lobby Menu/Info/IP").text = ip_string
+	get_node("Lobby Menu/Info/IP").text = "Lobby ID: " + ip_address
 	players[get_tree().get_network_unique_id()] = {"name": username.text,"c1":color1.color, "c2": color2.color, "boat": 0}
 	update_players(players)
 

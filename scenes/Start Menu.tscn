@@ -26,7 +26,6 @@ base_mat = ExtResource( 6 )
 high_mat = ExtResource( 7 )
 
 [node name="Initial" type="VBoxContainer" parent="."]
-visible = false
 anchor_left = 0.1
 anchor_top = 0.1
 anchor_right = 0.9
@@ -36,15 +35,15 @@ __meta__ = {
 }
 
 [node name="Name" type="HBoxContainer" parent="Initial"]
-margin_right = 819.0
-margin_bottom = 76.0
+margin_right = 1536.0
+margin_bottom = 140.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Label" type="Label" parent="Initial/Name"]
-margin_right = 407.0
-margin_bottom = 76.0
+margin_right = 766.0
+margin_bottom = 140.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource( 8 )
@@ -53,9 +52,9 @@ align = 1
 valign = 1
 
 [node name="Name" type="LineEdit" parent="Initial/Name"]
-margin_left = 411.0
-margin_right = 819.0
-margin_bottom = 76.0
+margin_left = 770.0
+margin_right = 1536.0
+margin_bottom = 140.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
@@ -63,16 +62,16 @@ text = "Bimgus"
 align = 1
 
 [node name="Colour" type="HBoxContainer" parent="Initial"]
-margin_top = 80.0
-margin_right = 819.0
-margin_bottom = 157.0
+margin_top = 144.0
+margin_right = 1536.0
+margin_bottom = 285.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Label" type="Label" parent="Initial/Colour"]
-margin_right = 270.0
-margin_bottom = 77.0
+margin_right = 509.0
+margin_bottom = 141.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource( 8 )
@@ -81,9 +80,9 @@ align = 1
 valign = 1
 
 [node name="main" type="ColorPickerButton" parent="Initial/Colour"]
-margin_left = 274.0
-margin_right = 544.0
-margin_bottom = 77.0
+margin_left = 513.0
+margin_right = 1022.0
+margin_bottom = 141.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
@@ -91,9 +90,9 @@ color = Color( 1, 0.743333, 0.3, 1 )
 edit_alpha = false
 
 [node name="highlight" type="ColorPickerButton" parent="Initial/Colour"]
-margin_left = 548.0
-margin_right = 819.0
-margin_bottom = 77.0
+margin_left = 1026.0
+margin_right = 1536.0
+margin_bottom = 141.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
@@ -101,25 +100,25 @@ color = Color( 0.3, 0.556667, 1, 1 )
 edit_alpha = false
 
 [node name="Host" type="Button" parent="Initial"]
-margin_top = 161.0
-margin_right = 819.0
-margin_bottom = 237.0
+margin_top = 289.0
+margin_right = 1536.0
+margin_bottom = 430.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
 text = "Host"
 
 [node name="IP" type="HBoxContainer" parent="Initial"]
-margin_top = 241.0
-margin_right = 819.0
-margin_bottom = 318.0
+margin_top = 434.0
+margin_right = 1536.0
+margin_bottom = 574.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Label" type="Label" parent="Initial/IP"]
-margin_right = 407.0
-margin_bottom = 77.0
+margin_right = 766.0
+margin_bottom = 140.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource( 8 )
@@ -127,37 +126,35 @@ text = "Lobby ID"
 align = 1
 valign = 1
 
-[node name="IP" type="SpinBox" parent="Initial/IP"]
-margin_left = 411.0
-margin_right = 819.0
-margin_bottom = 77.0
+[node name="IP" type="LineEdit" parent="Initial/IP"]
+margin_left = 770.0
+margin_right = 1536.0
+margin_bottom = 140.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
-max_value = 256.0
-value = 105.0
-rounded = true
 align = 1
 
 [node name="Join" type="Button" parent="Initial"]
-margin_top = 322.0
-margin_right = 819.0
-margin_bottom = 399.0
+margin_top = 578.0
+margin_right = 1536.0
+margin_bottom = 719.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
 text = "Join"
 
 [node name="Quit" type="Button" parent="Initial"]
-margin_top = 403.0
-margin_right = 819.0
-margin_bottom = 480.0
+margin_top = 723.0
+margin_right = 1536.0
+margin_bottom = 864.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
 text = "Quit"
 
 [node name="Lobby Menu" type="HBoxContainer" parent="."]
+visible = false
 anchor_left = 0.1
 anchor_top = 0.1
 anchor_right = 0.9
@@ -178,6 +175,7 @@ margin_right = 766.0
 margin_bottom = 222.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
+theme = ExtResource( 8 )
 text = "Lobby ID: 105"
 
 [node name="Play" type="Button" parent="Lobby Menu/Info"]

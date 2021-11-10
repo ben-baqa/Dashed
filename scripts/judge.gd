@@ -24,7 +24,6 @@ func _ready():
 func _process(delta):
 	time += delta
 	if my_bod_set:
-		# print(progress)
 		lap.text = "Lap %d" %[progress[my_bod][1]]
 		find_place()
 
@@ -75,7 +74,6 @@ func find_place():
 		ar.append(f)
 		if f.is_network_master():
 			place.text = ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th"][i]
-	print(ar)
 
 func get_furthest(p):
 	var furthest = null
