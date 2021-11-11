@@ -28,6 +28,7 @@ var _broadcast_timer = 0
 
 var ip_address
 var server_info = []
+var in_game: bool = false
 
 var players = {}
 
@@ -46,7 +47,7 @@ func _ready():
 	lobby_menu.visible = false
 	join_menu.visible = false
 	
-	# listen for hosts at port 5500
+	# listen for hosts at port 6868
 	packet_network = PacketPeerUDP.new()
 
 	if packet_network.listen(broadcast_port) != OK:
@@ -214,6 +215,8 @@ func on_disconnected(_id: int):
 # push host player list to all instances
 remotesync func update_players(player_info):
 	players = player_info
+	if in_game:
+		return
 	var i = 0
 	for c in player_list.get_children():
 		if i < boat_rots.size():
@@ -278,6 +281,7 @@ func menu():
 	rpc("return_to_menu")
 
 remotesync func return_to_menu():
+	in_game = false
 	var game_scene = get_node("../game")
 	if is_instance_valid(game_scene):
 		game_scene.queue_free()
@@ -301,6 +305,7 @@ func reload():
 # called by play button of host
 remotesync func loadGame(reload = false):
 	is_server = -1
+	in_game = true
 	if reload:
 		var prev_game_scene = get_node("../game")
 		get_node("..").remove_child(prev_game_scene)
