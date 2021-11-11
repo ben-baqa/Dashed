@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/Start Menu.gd" type="Script" id=1]
 [ext_resource path="res://packed scenes/player text.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://UI_Theme.tres" type="Theme" id=8]
 [ext_resource path="res://audio/boat_race_in_the_sky.ogg" type="AudioStream" id=9]
 [ext_resource path="res://models/bird_boats.obj" type="ArrayMesh" id=10]
+[ext_resource path="res://packed scenes/lobby listing.tscn" type="PackedScene" id=11]
 
 [node name="Start Menu" type="Control"]
 anchor_right = 1.0
@@ -19,6 +20,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 player_text = ExtResource( 2 )
+lobby_entry = ExtResource( 11 )
 player = ExtResource( 3 )
 spawn_pos = Vector3( -100, 16, 80 )
 boats = [ ExtResource( 5 ), ExtResource( 4 ), ExtResource( 10 ) ]
@@ -26,25 +28,24 @@ base_mat = ExtResource( 6 )
 high_mat = ExtResource( 7 )
 
 [node name="Initial" type="VBoxContainer" parent="."]
-visible = false
-anchor_left = 0.1
-anchor_top = 0.1
-anchor_right = 0.9
-anchor_bottom = 0.9
+anchor_left = 0.025
+anchor_top = 0.025
+anchor_right = 0.975
+anchor_bottom = 0.975
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Name" type="HBoxContainer" parent="Initial"]
-margin_right = 1536.0
-margin_bottom = 213.0
+margin_right = 1824.0
+margin_bottom = 253.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Label" type="Label" parent="Initial/Name"]
-margin_right = 766.0
-margin_bottom = 213.0
+margin_right = 910.0
+margin_bottom = 253.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource( 8 )
@@ -53,9 +54,9 @@ align = 2
 valign = 1
 
 [node name="Name" type="LineEdit" parent="Initial/Name"]
-margin_left = 770.0
-margin_right = 1536.0
-margin_bottom = 213.0
+margin_left = 914.0
+margin_right = 1824.0
+margin_bottom = 253.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
@@ -63,27 +64,27 @@ text = "Bimgus"
 align = 1
 
 [node name="Host" type="Button" parent="Initial"]
-margin_top = 217.0
-margin_right = 1536.0
-margin_bottom = 430.0
+margin_top = 257.0
+margin_right = 1824.0
+margin_bottom = 511.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
 text = "Host a Game"
 
 [node name="Join" type="Button" parent="Initial"]
-margin_top = 434.0
-margin_right = 1536.0
-margin_bottom = 647.0
+margin_top = 515.0
+margin_right = 1824.0
+margin_bottom = 768.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
 text = "Join a Game"
 
 [node name="Quit" type="Button" parent="Initial"]
-margin_top = 651.0
-margin_right = 1536.0
-margin_bottom = 864.0
+margin_top = 772.0
+margin_right = 1824.0
+margin_bottom = 1026.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
@@ -91,31 +92,33 @@ text = "Quit"
 
 [node name="Lobby Menu" type="HBoxContainer" parent="."]
 visible = false
-anchor_left = 0.1
-anchor_top = 0.1
-anchor_right = 0.9
-anchor_bottom = 0.9
+anchor_left = 0.025
+anchor_top = 0.025
+anchor_right = 0.975
+anchor_bottom = 0.975
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Players" type="VBoxContainer" parent="Lobby Menu"]
-margin_right = 1225.0
-margin_bottom = 864.0
+margin_right = 1456.0
+margin_bottom = 1026.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="player text" parent="Lobby Menu/Players" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 1225.0
-margin_bottom = 864.0
+margin_right = 1456.0
+margin_bottom = 1026.0
 
 [node name="Play" type="Button" parent="Lobby Menu"]
-margin_left = 1229.0
-margin_top = 382.0
-margin_right = 1536.0
-margin_bottom = 482.0
+margin_left = 1460.0
+margin_top = 463.0
+margin_right = 1824.0
+margin_bottom = 563.0
 rect_min_size = Vector2( 0, 100 )
 size_flags_horizontal = 15
 size_flags_vertical = 4
@@ -124,8 +127,11 @@ theme = ExtResource( 8 )
 text = "play"
 
 [node name="Lobbies" type="ScrollContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
+visible = false
+anchor_left = 0.025
+anchor_top = 0.025
+anchor_right = 0.975
+anchor_bottom = 0.975
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -133,8 +139,8 @@ __meta__ = {
 }
 
 [node name="List" type="VBoxContainer" parent="Lobbies"]
-margin_right = 1920.0
-margin_bottom = 1080.0
+margin_right = 1824.0
+margin_bottom = 1026.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
@@ -143,8 +149,8 @@ __meta__ = {
 }
 
 [node name="Menu" type="Button" parent="Lobbies/List"]
-margin_right = 1920.0
-margin_bottom = 1080.0
+margin_right = 1824.0
+margin_bottom = 1026.0
 rect_min_size = Vector2( 0, 150 )
 size_flags_horizontal = 3
 size_flags_vertical = 3

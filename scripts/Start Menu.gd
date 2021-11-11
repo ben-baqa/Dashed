@@ -19,9 +19,9 @@ var boat_spin: SpinBox
 var boat: int = 0
 var boat_rots = [0]
 
-var is_server: int = -1
+var is_server: int = 0
 
-const UDP_BROADCAST_FREQUENCY: float = 10.0 # 3 for me
+const UDP_BROADCAST_FREQUENCY: float = 2.0 # 3 for me
 var udp_network: PacketPeerUDP
 var port: int = 5500 # 6868 for me
 var _broadcast_timer = 0
@@ -68,18 +68,20 @@ func _process(delta):
 				_broadcast_timer = UDP_BROADCAST_FREQUENCY
 				list_lobbies()
 
-			server_info = []
 			while udp_network.get_available_packet_count() > 0:
 				var array_bytes = udp_network.get_packet()
 				var packet_string = array_bytes.get_string_from_ascii()
 
-				server_info.append(packet_string.split(","))
+				var new_info = packet_string.split(",")
+				if !new_info in server_info:
+					server_info.append(new_info)
 				print(packet_string)
 				# Do want you want with it
 		1:
 			_broadcast_timer -= delta
 			if _broadcast_timer <= 0:
 				_broadcast_timer = UDP_BROADCAST_FREQUENCY
+
 				var stg = username.text + "," + ip_address
 				stg += ",%d,%d" % [players.size(), 8]
 				var pac = stg.to_ascii()
@@ -121,14 +123,17 @@ func list_lobbies():
 	for i in server_info:
 		var c = lobby_entry.instance()
 		c.index = n
-		c.connect("button_press", self, "join_lobby")
+		c.connect("join", self, "join_lobby")
 		lobby_list.add_child(c)
 		n += 1
 
 # join a specific lobby
 func join_lobby(lobby_index: int):
+	var join_ip = server_info[lobby_index][1]
+	print("joining ip " + join_ip)
+
 	var peer = NetworkedMultiplayerENet.new()
-	print(peer.create_client(server_info[lobby_index][1], 5500))
+	print(peer.create_client(join_ip, 5500))
 	get_tree().network_peer = peer
 
 # called by UI button, initiates host server
@@ -136,7 +141,7 @@ func host():
 	init_menu.visible = false;
 	lobby_menu.visible = true;
 	var peer = NetworkedMultiplayerENet.new()
-	peer.create_server(5500, 4)
+	peer.create_server(5500, 8)
 	get_tree().network_peer = peer
 
 	var p = {"name": username.text,"c1":Color.orange, "c2": Color.cyan, "boat": 0}
