@@ -63,6 +63,8 @@ func _ready():
 func _process(delta):
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
+	if OS.get_name() == "HTML5":
+		is_server = -1
 	match is_server:
 		0:
 			_broadcast_timer -= delta
