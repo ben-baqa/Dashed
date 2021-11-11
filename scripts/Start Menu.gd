@@ -41,6 +41,7 @@ func _ready():
 	get_node("Lobbies/List/Menu").connect("button_down", self, "return_to_menu")
 
 	get_tree().connect("network_peer_connected", self, "on_connected")
+	get_tree().connect("network_peer_disconnected", self, "on_disconnected")
 	init_menu.visible = true
 	lobby_menu.visible = false
 	join_menu.visible = false
@@ -115,8 +116,12 @@ func list_lobbies():
 	var n = 0
 	for i in server_info:
 		var c = lobby_entry.instance()
-		c.index = n
 		c.connect("join", self, "join_lobby")
+		c.index = n
+
+		var lobby_info = "Host: %s\n[ %s / %s ]"
+		lobby_info %= [i[0], i[2], i[3]]
+		c.get_node("Label").text = lobby_info
 		lobby_list.add_child(c)
 		n += 1
 
@@ -179,9 +184,6 @@ remotesync func update_boat(id, val):
 	rpc("update_players", players)
 	
 	
-	
-	
-	
 # called when a new player is connected
 func on_connected(_id: int):
 	print("user connected!")
@@ -191,8 +193,8 @@ func on_connected(_id: int):
 
 	if !get_tree().is_network_server():
 		get_node("Lobby Menu/Play").queue_free()
-	# registers a new player with the host
-	rpc_id(1, "register_player", username.text, Color(randf(), randf(), randf()), Color(randf(), randf(), randf()))
+		# registers a new player with the host
+		rpc_id(1, "register_player", username.text, Color(randf(), randf(), randf()), Color(randf(), randf(), randf()))
 
 # register new player host side
 remotesync func register_player(player_name: String, c1: Color, c2: Color):
@@ -200,6 +202,14 @@ remotesync func register_player(player_name: String, c1: Color, c2: Color):
 	players[id] = {"name": player_name, "c1": c1, "c2": c2, "boat": 0}
 	rpc("update_players", players)
 
+func on_disconnected(_id: int):
+	print("User %d disconnected!" % _id)
+	if get_tree().is_network_server():
+		players.erase(_id)
+		rpc("update_players", players)
+	else:
+		get_tree().network_peer = null
+		return_to_menu()
 
 # push host player list to all instances
 remotesync func update_players(player_info):
@@ -262,8 +272,6 @@ remotesync func update_players(player_info):
 
 	# print("updating list of players!")
 	# print(players)
-	
-
 
 func menu():
 	print("returning to menu")

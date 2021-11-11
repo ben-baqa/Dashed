@@ -3,6 +3,7 @@
 [ext_resource path="res://scripts/explosion.gd" type="Script" id=1]
 
 [sub_resource type="SpatialMaterial" id=1]
+flags_do_not_receive_shadows = true
 params_billboard_mode = 1
 albedo_color = Color( 1, 0.670588, 0.0980392, 1 )
 emission_enabled = true
@@ -20,7 +21,7 @@ height = 1.0
 _data = [ Vector2( 0, 0.690909 ), 0.0, 0.0, 0, 0, Vector2( 0.316092, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.217112, 0.0, 0, 0 ]
 
 [sub_resource type="SpatialMaterial" id=4]
-flags_transparent = true
+flags_unshaded = true
 params_billboard_mode = 1
 albedo_color = Color( 0.227451, 0.156863, 0.0941176, 0.882353 )
 
