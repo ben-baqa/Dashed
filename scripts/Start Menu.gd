@@ -191,7 +191,6 @@ func on_connected(_id: int):
 
 	if !get_tree().is_network_server():
 		get_node("Lobby Menu/Play").queue_free()
-		is_server = -1
 	# registers a new player with the host
 	rpc_id(1, "register_player", username.text, Color(randf(), randf(), randf()), Color(randf(), randf(), randf()))
 
@@ -200,6 +199,7 @@ remotesync func register_player(player_name: String, c1: Color, c2: Color):
 	var id = get_tree().get_rpc_sender_id()
 	players[id] = {"name": player_name, "c1": c1, "c2": c2, "boat": 0}
 	rpc("update_players", players)
+
 
 # push host player list to all instances
 remotesync func update_players(player_info):
@@ -292,6 +292,7 @@ func reload():
 
 # called by play button of host
 remotesync func loadGame(reload = false):
+	is_server = -1
 	if reload:
 		var prev_game_scene = get_node("../game")
 		get_node("..").remove_child(prev_game_scene)
