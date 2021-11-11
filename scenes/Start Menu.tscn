@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/Start Menu.gd" type="Script" id=1]
 [ext_resource path="res://packed scenes/player text.tscn" type="PackedScene" id=2]
@@ -10,7 +10,6 @@
 [ext_resource path="res://UI_Theme.tres" type="Theme" id=8]
 [ext_resource path="res://audio/boat_race_in_the_sky.ogg" type="AudioStream" id=9]
 [ext_resource path="res://models/bird_boats.obj" type="ArrayMesh" id=10]
-[ext_resource path="res://packed scenes/lobby listing.tscn" type="PackedScene" id=11]
 
 [node name="Start Menu" type="Control"]
 anchor_right = 1.0
@@ -145,13 +144,12 @@ __meta__ = {
 
 [node name="Menu" type="Button" parent="Lobbies/List"]
 margin_right = 1920.0
-margin_bottom = 538.0
+margin_bottom = 1080.0
 rect_min_size = Vector2( 0, 150 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
 text = "Return to Menu"
-
-[node name="Lobby" parent="Lobbies/List" instance=ExtResource( 11 )]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )

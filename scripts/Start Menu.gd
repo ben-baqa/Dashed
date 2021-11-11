@@ -21,13 +21,13 @@ var boat_rots = [0]
 
 var is_server: int = -1
 
-const UDP_BROADCAST_FREQUENCY: float = 3.0 # 3 for me
+const UDP_BROADCAST_FREQUENCY: float = 10.0 # 3 for me
 var udp_network: PacketPeerUDP
-var server_broadcasting_udp_port: int = 5500 # 6868 for me
+var port: int = 5500 # 6868 for me
 var _broadcast_timer = 0
 
 var ip_address
-
+var server_info = []
 
 var players = {}
 
@@ -38,6 +38,7 @@ func _ready():
 	get_node("Initial/Join").connect("button_down", self, "join")
 	get_node("Initial/Quit").connect("button_down", self, "quit")
 	get_node("Lobby Menu/Play").connect("button_down", self, "play")
+	get_node("Lobbies/List/Menu").connect("button_down", self, "return_to_menu")
 
 	get_tree().connect("network_peer_connected", self, "on_connected")
 	init_menu.visible = true
@@ -47,10 +48,10 @@ func _ready():
 	# listen for hosts at port 5500
 	udp_network = PacketPeerUDP.new()
 
-	if udp_network.listen(server_broadcasting_udp_port) != OK:
-		print("Error listening on port: ", server_broadcasting_udp_port)
+	if udp_network.listen(port) != OK:
+		print("Error listening on port: ", port)
 	else:
-		print("Listening on port: ", server_broadcasting_udp_port)
+		print("Listening on port: ", port)
 		
 	for i in IP.get_local_addresses():
 		if i.split(".").size() == 4 && !i.begins_with(169.254) && i != "127.0.0.1":
@@ -62,31 +63,33 @@ func _process(delta):
 	
 	match is_server:
 		0:
+			_broadcast_timer -= delta
+			if _broadcast_timer <= 0:
+				_broadcast_timer = UDP_BROADCAST_FREQUENCY
+				list_lobbies()
+
+			server_info = []
 			while udp_network.get_available_packet_count() > 0:
 				var array_bytes = udp_network.get_packet()
 				var packet_string = array_bytes.get_string_from_ascii()
 
-				var array = packet_string.split(",")
-				var new_server_name = array[0]
-				var new_server_players = array[1]
-				var new_server_max_p = array[2]
+				server_info.append(packet_string.split(","))
 				print(packet_string)
 				# Do want you want with it
 		1:
 			_broadcast_timer -= delta
 			if _broadcast_timer <= 0:
 				_broadcast_timer = UDP_BROADCAST_FREQUENCY
-				var stg = username.text + "," + players.size() + "," + 8
+				var stg = username.text + "," + ip_address
+				stg += ",%d,%d" % [players.size(), 8]
 				var pac = stg.to_ascii()
 
-				for address in IP.get_local_addresses():
-					var parts = address.split('.')
-					if (parts.size() == 4):
-						parts[3] = '255'
-						udp_network.set_dest_address(parts.join('.'), server_broadcasting_udp_port)
-						var error = udp_network.put_packet(pac)
-						if error == 1:
-							print("Error while sending to ", parts.join('.'), ":", server_broadcasting_udp_port)
+				var parts = ip_address.split('.')
+				parts[3] = '255'
+				udp_network.set_dest_address(parts.join('.'), port)
+				var error = udp_network.put_packet(pac)
+				if error == 1:
+					print("Error while sending to ", parts.join('.'), ":", port)
 	
 
 
@@ -101,10 +104,31 @@ func join():
 #	get_tree().network_peer = peer
 	init_menu.visible = false
 	join_menu.visible = true
+	is_server = 0
+	list_lobbies()
 
-func join_lobby():
+# construct lobby menu
+func list_lobbies():
+	var remove = false
+	for c in lobby_list.get_children():
+		if !remove:
+			remove = true
+			continue
+		lobby_list.remove_child(c)
+		c.queue_free()
+
+	var n = 0
+	for i in server_info:
+		var c = lobby_entry.instance()
+		c.index = n
+		c.connect("button_press", self, "join_lobby")
+		lobby_list.add_child(c)
+		n += 1
+
+# join a specific lobby
+func join_lobby(lobby_index: int):
 	var peer = NetworkedMultiplayerENet.new()
-	print(peer.create_client(join_ip, 5500))
+	print(peer.create_client(server_info[lobby_index][1], 5500))
 	get_tree().network_peer = peer
 
 # called by UI button, initiates host server
@@ -115,15 +139,14 @@ func host():
 	peer.create_server(5500, 4)
 	get_tree().network_peer = peer
 
-	players[get_tree().get_network_unique_id()] = {"name": username.text,"c1":Color.orange, "c2": Color.aliceblue, "boat": 0}
+	var p = {"name": username.text,"c1":Color.orange, "c2": Color.cyan, "boat": 0}
+	players[get_tree().get_network_unique_id()] = p
 	update_players(players)
 	
 	# initialize boradcasting connection
 	udp_network = PacketPeerUDP.new()
 	udp_network.set_broadcast_enabled(true)
-
-
-
+	is_server = 1
 
 # manage editing colours in lobby
 func main_colour_change(color):
@@ -246,7 +269,9 @@ func menu():
 	rpc("return_to_menu")
 
 remotesync func return_to_menu():
-	get_node("../game").queue_free()
+	var game_scene = get_node("../game")
+	if is_instance_valid(game_scene):
+		game_scene.queue_free()
 	queue_free()
 	get_tree().change_scene("res://scenes/Start Menu.tscn")
 	get_tree().network_peer = null
