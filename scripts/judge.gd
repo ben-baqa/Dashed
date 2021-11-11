@@ -5,6 +5,7 @@ export var menu_entry: PackedScene
 
 var checkpoints = []
 var progress = {}
+var finished = []
 
 onready var end_menu = get_child(0)
 onready var place = get_child(1)
@@ -49,7 +50,10 @@ func pass_checkpoint(body, index):
 		progress[body][0] = 1
 		progress[body][1] += 1
 	if progress[body][1] == laps:
+		if body in finished:
+			return
 		print(progress[body][2] + " Finished")
+		finished.append(body)
 		finish_count += 1
 		var inst = menu_entry.instance()
 		inst.get_node("Place").text = "%d" %[finish_count]

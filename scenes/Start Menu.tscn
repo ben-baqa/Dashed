@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scripts/Start Menu.gd" type="Script" id=1]
 [ext_resource path="res://packed scenes/player text.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://UI_Theme.tres" type="Theme" id=8]
 [ext_resource path="res://audio/boat_race_in_the_sky.ogg" type="AudioStream" id=9]
 [ext_resource path="res://models/bird_boats.obj" type="ArrayMesh" id=10]
+[ext_resource path="res://packed scenes/lobby listing.tscn" type="PackedScene" id=11]
 
 [node name="Start Menu" type="Control"]
 anchor_right = 1.0
@@ -26,6 +27,7 @@ base_mat = ExtResource( 6 )
 high_mat = ExtResource( 7 )
 
 [node name="Initial" type="VBoxContainer" parent="."]
+visible = false
 anchor_left = 0.1
 anchor_top = 0.1
 anchor_right = 0.9
@@ -36,116 +38,51 @@ __meta__ = {
 
 [node name="Name" type="HBoxContainer" parent="Initial"]
 margin_right = 1536.0
-margin_bottom = 140.0
+margin_bottom = 213.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
 
 [node name="Label" type="Label" parent="Initial/Name"]
 margin_right = 766.0
-margin_bottom = 140.0
+margin_bottom = 213.0
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource( 8 )
-text = "Name"
-align = 1
+text = "Name:"
+align = 2
 valign = 1
 
 [node name="Name" type="LineEdit" parent="Initial/Name"]
 margin_left = 770.0
 margin_right = 1536.0
-margin_bottom = 140.0
+margin_bottom = 213.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
 text = "Bimgus"
 align = 1
 
-[node name="Colour" type="HBoxContainer" parent="Initial"]
-margin_top = 144.0
-margin_right = 1536.0
-margin_bottom = 285.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-alignment = 1
-
-[node name="Label" type="Label" parent="Initial/Colour"]
-margin_right = 509.0
-margin_bottom = 141.0
-size_flags_horizontal = 3
-size_flags_vertical = 7
-theme = ExtResource( 8 )
-text = "Colours"
-align = 1
-valign = 1
-
-[node name="main" type="ColorPickerButton" parent="Initial/Colour"]
-margin_left = 513.0
-margin_right = 1022.0
-margin_bottom = 141.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = ExtResource( 8 )
-color = Color( 1, 0.743333, 0.3, 1 )
-edit_alpha = false
-
-[node name="highlight" type="ColorPickerButton" parent="Initial/Colour"]
-margin_left = 1026.0
-margin_right = 1536.0
-margin_bottom = 141.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = ExtResource( 8 )
-color = Color( 0.3, 0.556667, 1, 1 )
-edit_alpha = false
-
 [node name="Host" type="Button" parent="Initial"]
-margin_top = 289.0
+margin_top = 217.0
 margin_right = 1536.0
 margin_bottom = 430.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
-text = "Host"
-
-[node name="IP" type="HBoxContainer" parent="Initial"]
-margin_top = 434.0
-margin_right = 1536.0
-margin_bottom = 574.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-alignment = 1
-
-[node name="Label" type="Label" parent="Initial/IP"]
-margin_right = 766.0
-margin_bottom = 140.0
-size_flags_horizontal = 3
-size_flags_vertical = 7
-theme = ExtResource( 8 )
-text = "Lobby ID"
-align = 1
-valign = 1
-
-[node name="IP" type="LineEdit" parent="Initial/IP"]
-margin_left = 770.0
-margin_right = 1536.0
-margin_bottom = 140.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = ExtResource( 8 )
-align = 1
+text = "Host a Game"
 
 [node name="Join" type="Button" parent="Initial"]
-margin_top = 578.0
+margin_top = 434.0
 margin_right = 1536.0
-margin_bottom = 719.0
+margin_bottom = 647.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource( 8 )
-text = "Join"
+text = "Join a Game"
 
 [node name="Quit" type="Button" parent="Initial"]
-margin_top = 723.0
+margin_top = 651.0
 margin_right = 1536.0
 margin_bottom = 864.0
 size_flags_horizontal = 3
@@ -163,33 +100,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Info" type="VBoxContainer" parent="Lobby Menu"]
-margin_right = 766.0
-margin_bottom = 864.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="IP" type="Label" parent="Lobby Menu/Info"]
-margin_top = 208.0
-margin_right = 766.0
-margin_bottom = 222.0
-size_flags_horizontal = 3
-size_flags_vertical = 6
-theme = ExtResource( 8 )
-text = "Lobby ID: 105"
-
-[node name="Play" type="Button" parent="Lobby Menu/Info"]
-margin_top = 434.0
-margin_right = 766.0
-margin_bottom = 864.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = ExtResource( 8 )
-text = "play"
-
 [node name="Players" type="VBoxContainer" parent="Lobby Menu"]
-margin_left = 770.0
-margin_right = 1536.0
+margin_right = 1225.0
 margin_bottom = 864.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -197,8 +109,49 @@ size_flags_vertical = 3
 [node name="player text" parent="Lobby Menu/Players" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 766.0
+margin_right = 1225.0
 margin_bottom = 864.0
+
+[node name="Play" type="Button" parent="Lobby Menu"]
+margin_left = 1229.0
+margin_top = 382.0
+margin_right = 1536.0
+margin_bottom = 482.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_horizontal = 15
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.25
+theme = ExtResource( 8 )
+text = "play"
+
+[node name="Lobbies" type="ScrollContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="List" type="VBoxContainer" parent="Lobbies"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="Button" parent="Lobbies/List"]
+margin_right = 1920.0
+margin_bottom = 538.0
+rect_min_size = Vector2( 0, 150 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Return to Menu"
+
+[node name="Lobby" parent="Lobbies/List" instance=ExtResource( 11 )]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
