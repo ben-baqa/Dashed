@@ -22,7 +22,7 @@ var boat_rots = [0]
 var is_server: int = 0
 
 const UDP_BROADCAST_FREQUENCY: float = 2.0 # 3 for me
-var packet_network: PacketPeer
+var packet_network: PacketPeerUDP
 var broadcast_port: int = 6868 # 6868 for me
 var _broadcast_timer = 0
 
@@ -46,7 +46,7 @@ func _ready():
 	join_menu.visible = false
 	
 	# listen for hosts at port 5500
-	packet_network = PacketPeer.new()
+	packet_network = PacketPeerUDP.new()
 
 	if packet_network.listen(broadcast_port) != OK:
 		print("Error listening on port: ", broadcast_port)
@@ -92,18 +92,11 @@ func _process(delta):
 				var error = packet_network.put_packet(pac)
 				if error == 1:
 					print("Error while sending to ", parts.join('.'), ":", broadcast_port)
-	
 
 
 
 # called by UI button, initiated client conection
 func join():
-#	var join_ip = ip_address
-#	print("joining ip " + join_ip)
-
-#	var peer = NetworkedMultiplayerENet.new()
-#	print(peer.create_client(join_ip, 5500))
-#	get_tree().network_peer = peer
 	init_menu.visible = false
 	join_menu.visible = true
 	is_server = 0
@@ -150,7 +143,7 @@ func host():
 	update_players(players)
 	
 	# initialize boradcasting connection
-	packet_network = PacketPeer.new()
+	packet_network = PacketPeerUDP.new()
 	packet_network.set_broadcast_enabled(true)
 	is_server = 1
 
@@ -192,11 +185,13 @@ remotesync func update_boat(id, val):
 # called when a new player is connected
 func on_connected(_id: int):
 	print("user connected!")
-	init_menu.visible = false;
-	lobby_menu.visible = true;
+	init_menu.visible = false
+	join_menu.visible = false
+	lobby_menu.visible = true
 
 	if !get_tree().is_network_server():
-		get_node("Lobby Menu/Info/Play").queue_free()
+		get_node("Lobby Menu/Play").queue_free()
+		is_server = -1
 	# registers a new player with the host
 	rpc_id(1, "register_player", username.text, Color(randf(), randf(), randf()), Color(randf(), randf(), randf()))
 
