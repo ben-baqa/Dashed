@@ -102,6 +102,11 @@ func join():
 	init_menu.visible = false
 	join_menu.visible = true
 
+func join_lobby():
+	var peer = NetworkedMultiplayerENet.new()
+	print(peer.create_client(join_ip, 5500))
+	get_tree().network_peer = peer
+
 # called by UI button, initiates host server
 func host():
 	init_menu.visible = false;
