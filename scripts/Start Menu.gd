@@ -22,8 +22,8 @@ var boat_rots = [0]
 var is_server: int = 0
 
 const UDP_BROADCAST_FREQUENCY: float = 2.0 # 3 for me
-var udp_network: PacketPeerUDP
-var port: int = 5500 # 6868 for me
+var packet_network: PacketPeer
+var broadcast_port: int = 6868 # 6868 for me
 var _broadcast_timer = 0
 
 var ip_address
@@ -46,12 +46,12 @@ func _ready():
 	join_menu.visible = false
 	
 	# listen for hosts at port 5500
-	udp_network = PacketPeerUDP.new()
+	packet_network = PacketPeer.new()
 
-	if udp_network.listen(port) != OK:
-		print("Error listening on port: ", port)
+	if packet_network.listen(broadcast_port) != OK:
+		print("Error listening on port: ", broadcast_port)
 	else:
-		print("Listening on port: ", port)
+		print("Listening on port: ", broadcast_port)
 		
 	for i in IP.get_local_addresses():
 		if i.split(".").size() == 4 && !i.begins_with(169.254) && i != "127.0.0.1":
@@ -68,8 +68,8 @@ func _process(delta):
 				_broadcast_timer = UDP_BROADCAST_FREQUENCY
 				list_lobbies()
 
-			while udp_network.get_available_packet_count() > 0:
-				var array_bytes = udp_network.get_packet()
+			while packet_network.get_available_packet_count() > 0:
+				var array_bytes = packet_network.get_packet()
 				var packet_string = array_bytes.get_string_from_ascii()
 
 				var new_info = packet_string.split(",")
@@ -88,10 +88,10 @@ func _process(delta):
 
 				var parts = ip_address.split('.')
 				parts[3] = '255'
-				udp_network.set_dest_address(parts.join('.'), port)
-				var error = udp_network.put_packet(pac)
+				packet_network.set_dest_address(parts.join('.'), broadcast_port)
+				var error = packet_network.put_packet(pac)
 				if error == 1:
-					print("Error while sending to ", parts.join('.'), ":", port)
+					print("Error while sending to ", parts.join('.'), ":", broadcast_port)
 	
 
 
@@ -130,11 +130,12 @@ func list_lobbies():
 # join a specific lobby
 func join_lobby(lobby_index: int):
 	var join_ip = server_info[lobby_index][1]
-	print("joining ip " + join_ip)
+	print("joining ip |" + join_ip + "|")
 
 	var peer = NetworkedMultiplayerENet.new()
 	print(peer.create_client(join_ip, 5500))
 	get_tree().network_peer = peer
+	print(peer)
 
 # called by UI button, initiates host server
 func host():
@@ -149,8 +150,8 @@ func host():
 	update_players(players)
 	
 	# initialize boradcasting connection
-	udp_network = PacketPeerUDP.new()
-	udp_network.set_broadcast_enabled(true)
+	packet_network = PacketPeer.new()
+	packet_network.set_broadcast_enabled(true)
 	is_server = 1
 
 # manage editing colours in lobby
